@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =
+CFLAGS = `sdl2-config --cflags --libs`
 LDFLAGS = 
 INCLUDES = 
 EXEC = towerDefence
