@@ -16,13 +16,13 @@ int main(int argc, char** argv)
         SDL_Window* pWindow = NULL;
         pWindow = SDL_CreateWindow("Ma première application SDL2",SDL_WINDOWPOS_UNDEFINED,
                                                                   SDL_WINDOWPOS_UNDEFINED,
-                                                                  640,
-                                                                  480,
+                                                                  1152,
+                                                                  960,
                                                                   SDL_WINDOW_SHOWN);
 
         if( pWindow )
         {
-            SDL_Delay(3000); /* Attendre trois secondes, que l'utilisateur voie la fenêtre */
+            SDL_Delay(6000); /* Attendre trois secondes, que l'utilisateur voie la fenêtre */
 
             SDL_DestroyWindow(pWindow);
         }
