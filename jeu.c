@@ -21,3 +21,7 @@ struct Base
 	int vie;
 	SDL_Rect rect;
 };
+
+void jouer() {
+
+}
