@@ -29,7 +29,8 @@ struct Base
 void jouer(SDL_Renderer* pRenderer) {
 
 	SDL_bool partieContinuer = SDL_TRUE;
-
+	
+	/* Chargelment de l'image du fond*/
     SDL_Surface *pFond = SDL_LoadBMP ("textures/Terrain.bmp");
     if (pFond == NULL) {
         SDL_Log("ERREUR: Chargement de l'image > %s\n", SDL_GetError());
@@ -48,7 +49,7 @@ void jouer(SDL_Renderer* pRenderer) {
 	SDL_FreeSurface (pFond);
 
 	partieContinuer = SDL_TRUE;
-	
+
 /*----------------------------- Boucle principale d'une partie -------------------------*/
 	while (partieContinuer) {
 		SDL_Event eventsJeu;
@@ -64,7 +65,6 @@ void jouer(SDL_Renderer* pRenderer) {
 								break;
 							default:
 								continue;
-
 						}
 					continue;
             	default:
