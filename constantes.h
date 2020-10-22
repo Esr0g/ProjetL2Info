@@ -1,0 +1,7 @@
+#ifndef DEF_CONSTANTE
+#define DEF_CONSTANTE
+
+#define FENETRE_LARGEUR 1152
+#define FENETRE_HAUTEUR 960
+
+#endif

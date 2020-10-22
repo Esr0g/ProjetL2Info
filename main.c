@@ -1,4 +1,9 @@
-#include "main.h"
+#include <SDL2/SDL.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "constantes.h"
+#include "jeu.h"
 /* https://github.com/Esr0g/ProjetL2Info.git */
 
 int main(int argc, char *argv[])
@@ -56,10 +61,10 @@ int main(int argc, char *argv[])
 
     SDL_FreeSurface(pMenu);
 
-    SDL_bool program_launched = SDL_TRUE;
+    SDL_bool programLaunched = SDL_TRUE;
 
 /* ---------------------------------------------- Boucle principale ---------------------------------------------*/
-    while (program_launched) {
+    while (programLaunched) {
         SDL_Event events;
 
         SDL_RenderCopy(pRenderer, pTextureMenu, NULL, NULL);
@@ -70,19 +75,19 @@ int main(int argc, char *argv[])
             case SDL_KEYDOWN:
                 switch (events.key.keysym.sym) {
                     case SDLK_1:
-                     /*Ajouter la fonction jouer*/
+                        jouer(pRenderer);
                         continue;
                     case SDLK_ESCAPE:
-                        program_launched = SDL_FALSE;
+                        programLaunched = SDL_FALSE;
                         break;
                     case SDLK_q:
-                        program_launched = SDL_FALSE;
+                        programLaunched = SDL_FALSE;
                         break;
                     default:
                         continue;
                 }
             case SDL_QUIT:
-                program_launched = SDL_FALSE;
+                programLaunched = SDL_FALSE;
                 break;
             default:
                 continue;
