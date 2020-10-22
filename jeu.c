@@ -3,13 +3,15 @@ typedef struct Ennemis1 Ennemis1;
 struct Ennemis1
 {
     int vie; 
+	int Rect;
 	
 	
-	int getVie(void)
-	{
-		return vie;
-	}		
+	
 };
+	int  getVie(Ennemis1 e1)
+	{
+		return e1.vie;
+	}	
 
 
 typedef struct Base Base;
