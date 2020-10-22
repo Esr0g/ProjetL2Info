@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    /*Chargement du fond de la map*/
-    SDL_Surface *image = SDL_LoadBMP ("textures/Terrain.bmp");
-    if (image == NULL) {
+    /*Chargement du Menu*/
+    SDL_Surface *pMenu = SDL_LoadBMP ("textures/Menu.bmp");
+    if (pMenu == NULL) {
         SDL_Log("ERREUR: Chargement de l'image > %s\n", SDL_GetError());
 
         SDL_DestroyRenderer(pRenderer);
@@ -43,18 +43,18 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    SDL_Texture *pTextureImage = SDL_CreateTextureFromSurface(pRenderer, image);
-    if (pTextureImage == NULL) {
+    SDL_Texture *pTextureMenu = SDL_CreateTextureFromSurface(pRenderer, pMenu);
+    if (pTextureMenu == NULL) {
         SDL_Log("ERREUR: Creation du rendu à partir d'une image > %s\n", SDL_GetError());
 
-        SDL_FreeSurface(image);
+        SDL_FreeSurface(pMenu);
         SDL_DestroyRenderer(pRenderer);
         SDL_DestroyWindow (pWindow);
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
 
-    SDL_FreeSurface(image);
+    SDL_FreeSurface(pMenu);
 
     SDL_bool program_launched = SDL_TRUE;
 
@@ -62,31 +62,36 @@ int main(int argc, char *argv[])
     while (program_launched) {
         SDL_Event events;
 
-        while (SDL_PollEvent(&events)) {
-            switch (events.type) {
-                case SDL_KEYDOWN:
-                    switch (events.key.keysym.sym) {
-                        case SDLK_a:
-                            continue;
-                        default:
-                            continue;
-                    }
-                case SDL_QUIT:
-                    program_launched = SDL_FALSE;
-                    break;
-                default:
-                    continue;
-            }
-        }
-
-        SDL_RenderCopy(pRenderer, pTextureImage, NULL, NULL);
-
+        SDL_RenderCopy(pRenderer, pTextureMenu, NULL, NULL);
         SDL_RenderPresent (pRenderer);
+
+        SDL_WaitEvent(&events);
+        switch (events.type) {
+            case SDL_KEYDOWN:
+                switch (events.key.keysym.sym) {
+                    case SDLK_1:
+                     /*Ajouter la fonction jouer*/
+                        continue;
+                    case SDLK_ESCAPE:
+                        program_launched = SDL_FALSE;
+                        break;
+                    case SDLK_q:
+                        program_launched = SDL_FALSE;
+                        break;
+                    default:
+                        continue;
+                }
+            case SDL_QUIT:
+                program_launched = SDL_FALSE;
+                break;
+            default:
+                continue;
+        }
     }
 
 /*-------------------------------------- Fin de la boucle principale --------------------------------------------*/
 
-    SDL_DestroyTexture(pTextureImage);
+    SDL_DestroyTexture(pTextureMenu);
     SDL_DestroyWindow (pWindow);
     SDL_DestroyRenderer (pRenderer);
     SDL_Quit();
