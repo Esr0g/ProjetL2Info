@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 typedef struct Ennemis1 Ennemis1;
 struct Ennemis1
 {
