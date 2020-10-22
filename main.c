@@ -6,12 +6,14 @@ int main(int argc, char *argv[])
     SDL_Window *pWindow = NULL;
     SDL_Renderer *pRenderer = NULL;
 
+    /* Initialisation de la SDL*/
     if (SDL_Init (SDL_INIT_VIDEO) != 0) {
         SDL_Log ("ERREUR: Initialisation SDL > %s\n", SDL_GetError());
 
         exit(EXIT_FAILURE);
     }
 
+    /* Creation de la fenêtre*/
     pWindow = SDL_CreateWindow("Tower Defense", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, FENETRE_LARGEUR, FENETRE_HAUTEUR, SDL_WINDOW_SHOWN);
     if (pWindow == NULL) {
         SDL_Log("ERREUR: Creation de la fenêtre > %s\n", SDL_GetError());
@@ -20,6 +22,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /*Créationdu Rendu*/
     pRenderer = SDL_CreateRenderer (pWindow, -1, SDL_RENDERER_ACCELERATED);
     if (pRenderer == NULL) {
         SDL_Log("ERREUR: Creation du Rendu > %s\n", SDL_GetError());
@@ -29,6 +32,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    /*Chargement du fond de la map*/
     SDL_Surface *image = SDL_LoadBMP ("textures/Terrain.bmp");
     if (image == NULL) {
         SDL_Log("ERREUR: Chargement de l'image > %s\n", SDL_GetError());
@@ -54,15 +58,15 @@ int main(int argc, char *argv[])
 
     SDL_bool program_launched = SDL_TRUE;
 
+/* ---------------------------------------------- Boucle principale ---------------------------------------------*/
     while (program_launched) {
         SDL_Event events;
 
         while (SDL_PollEvent(&events)) {
             switch (events.type) {
                 case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym) {
+                    switch (events.key.keysym.sym) {
                         case SDLK_a:
-
                             continue;
                         default:
                             continue;
@@ -79,6 +83,8 @@ int main(int argc, char *argv[])
 
         SDL_RenderPresent (pRenderer);
     }
+
+/*-------------------------------------- Fin de la boucle principale --------------------------------------------*/
 
     SDL_DestroyTexture(pTextureImage);
     SDL_DestroyWindow (pWindow);
