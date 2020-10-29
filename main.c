@@ -4,6 +4,7 @@
 
 #include "constantes.h"
 #include "jeu.h"
+#include "structures.h"
 /* https://github.com/Esr0g/ProjetL2Info.git */
 
 int main(int argc, char *argv[])
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    /*Chargement du Menu*/
+    /*Chargement de l'image du Menu*/
     SDL_Surface *pMenu = SDL_LoadBMP ("textures/Menu.bmp");
     if (pMenu == NULL) {
         SDL_Log("ERREUR: Chargement de l'image > %s\n", SDL_GetError());

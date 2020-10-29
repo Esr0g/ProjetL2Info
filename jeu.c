@@ -3,20 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "jeu.h"
-
-typedef struct Ennemis1 Ennemis1;
-struct Ennemis1
-{
-    int vie; 
-	int Rect;
-	
-	
-	
-};
-	int  getVie(Ennemis1 e1)
-	{
-		return e1.vie;
-	}	
+#include "structures.h"
 
 
 typedef struct Base Base;
@@ -48,14 +35,32 @@ void jouer(SDL_Renderer* pRenderer) {
 
 	SDL_FreeSurface (pFond);
 
-	partieContinuer = SDL_TRUE;
+	SDL_Rect e;
+		e.x = 0;
+		e.y = 260;
+		e.h = 50;
+		e.w = 50;
+
+	int tempsActuel =0, tempsPrecedent = 0;
 
 /*----------------------------- Boucle principale d'une partie -------------------------*/
 	while (partieContinuer) {
 		SDL_Event eventsJeu;
+
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
+
+		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
+		SDL_RenderFillRect(pRenderer, &e);
+
         SDL_RenderPresent (pRenderer);
 
+		tempsActuel = SDL_GetTicks();
+		if (tempsActuel-tempsPrecedent > 40) {
+			e.x++;
+			tempsPrecedent = tempsActuel;
+		} else {
+			SDL_Delay(40 - (tempsActuel - tempsPrecedent));
+		}
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
 				case SDL_KEYDOWN:
@@ -73,5 +78,4 @@ void jouer(SDL_Renderer* pRenderer) {
 		}
 	}
 /*--------------------- Fin de la boucle principale d'une partie ------------------*/
-
 }
