@@ -27,6 +27,9 @@ void jouer(SDL_Renderer* pRenderer) {
     }
 
 	SDL_FreeSurface (pFond);
+
+	Base base01; base01.base.h = 64; base01.base.w = 128 ; base01.base.x = 448; base01.base.y = 896; base01.vie = 3;
+	
 	
 	Liste *listeEnnemi = NULL; // initialisation de la liste
 	int nbEnnemi = 5; // nombre d'ennmis choisi
@@ -45,8 +48,6 @@ void jouer(SDL_Renderer* pRenderer) {
 /*----------------------------- Boucle principale d'une partie -------------------------*/
 	while (partieContinuer) {
 		SDL_Event eventsJeu;
-
-		limite = SDL_GetTicks() + FPS_LIMITE;
 
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
 
@@ -69,7 +70,17 @@ void jouer(SDL_Renderer* pRenderer) {
 			SDL_RemoveTimer(mouvementEnnemi);
 		}
 
+		for (int i = 0; i < listeTaille(listeEnnemi); i++) {
+			if (SDL_HasIntersection(&getEnnemi(listeEnnemi, i)->forme, &base01.base)) {
+				supprimerEnnemi(&listeEnnemi, i);
+				base01.vie--;
+			}
+		}
+
+		limite = SDL_GetTicks() + FPS_LIMITE;
+
 		/* Color les énnemis lorsqu'il y'en a */
+		limiteFPS(limite);
 		if (!estVide(listeEnnemi)) {
 			colorationEnnemi(pRenderer, listeEnnemi);
 		}
@@ -90,11 +101,7 @@ void jouer(SDL_Renderer* pRenderer) {
 			}
 		}
 
-
-		limiteFPS(limite);
 		SDL_RenderPresent (pRenderer);
-		limite =  SDL_GetTicks() + FPS_LIMITE;
-
 		
 	}
 /*--------------------- Fin de la boucle principale d'une partie ------------------*/
