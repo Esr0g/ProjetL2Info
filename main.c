@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
                 programLaunched = SDL_FALSE;
                 break;
             default:
-                continue;
+                break;
         }
     }
 

@@ -5,14 +5,6 @@
 #include "jeu.h"
 #include "structures.h"
 
-
-typedef struct Base Base;
-struct Base
-{
-	int vie;
-	SDL_Rect rect;
-};
-
 void jouer(SDL_Renderer* pRenderer) {
 
 	SDL_bool partieContinuer = SDL_TRUE;
@@ -41,7 +33,7 @@ void jouer(SDL_Renderer* pRenderer) {
 		e.h = 50;
 		e.w = 50;
 
-	int tempsActuel =0, tempsPrecedent = 0;
+	int tempsActuel = 0, tempsPrecedent = 0;
 
 /*----------------------------- Boucle principale d'une partie -------------------------*/
 	while (partieContinuer) {
@@ -55,11 +47,11 @@ void jouer(SDL_Renderer* pRenderer) {
         SDL_RenderPresent (pRenderer);
 
 		tempsActuel = SDL_GetTicks();
-		if (tempsActuel-tempsPrecedent > 40) {
+		if (tempsActuel-tempsPrecedent > 33) {
 			e.x++;
 			tempsPrecedent = tempsActuel;
 		} else {
-			SDL_Delay(40 - (tempsActuel - tempsPrecedent));
+			SDL_Delay(33 - (tempsActuel - tempsPrecedent));
 		}
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
@@ -69,7 +61,7 @@ void jouer(SDL_Renderer* pRenderer) {
 								partieContinuer =  SDL_FALSE;
 								break;
 							default:
-								continue;
+								break;
 						}
 					continue;
             	default:
@@ -78,4 +70,6 @@ void jouer(SDL_Renderer* pRenderer) {
 		}
 	}
 /*--------------------- Fin de la boucle principale d'une partie ------------------*/
+
+	SDL_DestroyTexture(pTextureFond);
 }

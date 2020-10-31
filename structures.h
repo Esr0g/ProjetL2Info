@@ -13,17 +13,25 @@ typedef struct Ennemi {
     SDL_Rect ennemi;
 }Ennemi;
 
-/* Définition d'une Liste */
-typedef struct ListeElement {
-    Ennemi e;
-    struct ListeElement *suivant;
-}ListeElement, *Liste;
+/* Définition de la base */
+typedef struct Base {
+    int vie;
+    SDL_Rect base;
+}Base;
+
+/* Définition de la liste */
+typedef struct ElementListe {
+    Ennemi en;
+    struct ElementListe *suivant;
+}Liste;
 
 /* Prototypes */
-Liste nouvelleListe();
-Bool estVide(Liste li);
-int listeTaille(Liste li);
-Liste ajouterListe(Liste li, Ennemi en);
-
+Bool estVide(Liste *li);
+int ajouterEnnemi(Liste **li);
+Liste *supprimerTete(Liste **li);
+int listeTaille(Liste *li);
+Liste *supprimerEnnemi(Liste **li, int index);
+Liste *supprimerTout(Liste **li);
+Ennemi getEnnemi(Liste *li);
 
 #endif
