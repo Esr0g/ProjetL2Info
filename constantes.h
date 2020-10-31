@@ -4,4 +4,13 @@
 #define FENETRE_LARGEUR 1152
 #define FENETRE_HAUTEUR 960
 
+#define FPS_LIMITE 16
+
+#define H_ENNEMI 40
+#define W_ENNEMI 40
+#define VITESSE_DEPLACEMENT_ENNEMI 30
+#define X_DEPART_ENNEMI_1 0
+#define Y_DEPART_ENNEMI_1 268
+#define VIE_ENNEMI_1 100
+
 #endif

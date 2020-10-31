@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     SDL_Renderer *pRenderer = NULL;
 
     /* Initialisation de la SDL*/
-    if (SDL_Init (SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         SDL_Log ("ERREUR: Initialisation SDL > %s\n", SDL_GetError());
 
         exit(EXIT_FAILURE);
