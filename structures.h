@@ -10,7 +10,7 @@ typedef enum {
 /* Définition d'un ennemi */
 typedef struct Ennemi {
     int vie;
-    SDL_Rect ennemi;
+    SDL_Rect forme;
 }Ennemi;
 
 /* Définition de la base */
@@ -32,6 +32,10 @@ Liste *supprimerTete(Liste **li);
 int listeTaille(Liste *li);
 Liste *supprimerEnnemi(Liste **li, int index);
 Liste *supprimerTout(Liste **li);
-Ennemi getEnnemi(Liste *li);
+Ennemi *getEnnemi(Liste *li, int index);
+void definirEnnemiListe(Liste *li, int index, int v, int x, int y, int w, int h);
+void setEnnemiPosition(Liste *li, int index, int x, int y);
+void setEnnemiVie(Liste *li, int index, int v);
+void setEnemmiTaille(Liste *li, int index, int w, int h);
 
 #endif

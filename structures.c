@@ -126,3 +126,124 @@ Liste *supprimerTout (Liste **li) {
         return *li;
     } 
 }
+
+/**
+ * Renvoie l'ennemi à l'index spécifique de la liste
+ * @param li pointeur de la liste
+ * @param index de l'ennemi (compris entre 1 et la taille de la liste);
+ * @return e l'ennemi à l'index choisi
+ */
+Ennemi *getEnnemi (Liste *li, int index) {
+    if (index == 0) {
+        return &li->en;
+    }
+
+    Ennemi *e;
+
+    for (int i = 0; i < index; i++) {
+        li = li->suivant;
+        e = NULL;
+        e = &li->en;
+    }
+
+    return e;
+}
+
+/**
+ * Permet de définir complétement un énnemi à un index précis
+ * @param li pointeur de la liste;
+ * @param index de l'ennemi dans la liste
+ * @param vie de l'ennemi
+ * @param x coordonée x de l'ennemi
+ * @param y coordonée y de l'ennemi
+ * @param w largeur de l'ennemi
+ * @param h hauteur de l'ennemi
+ */
+void definirEnnemiListe(Liste *li, int index, int v, int x, int y, int w, int h) {
+    Liste *acctuel = li;
+    Ennemi *e = NULL;
+
+    if (index == 0) {
+        e = &li->en;
+    } else {
+        for (int i = 0; i < index; i++) {
+            acctuel = acctuel->suivant;
+            e = &acctuel->en;
+        }
+    }
+
+    e->vie = v;
+    e->forme.h = h;
+    e->forme.w = w;
+    e->forme.x = x;
+    e->forme.y = y;
+}
+
+/**
+ * Permet de définir la position de l'ennemi
+ * @param li pointeur de la liste
+ * @param index de l'ennemi dans la liste
+ * @param x
+ * @param y
+ */
+void setEnnemiPosition(Liste *li, int index, int x, int y) {
+    Liste *acctuel = li;
+    Ennemi *e = NULL;
+
+    if (index == 0) {
+        e = &li->en;
+    } else {
+        for (int i = 0; i < index; i++) {
+            acctuel = acctuel->suivant;
+            e = &acctuel->en;
+        }
+    }
+
+    e->forme.x = x;
+    e->forme.y = y;
+}
+
+/**
+ * Permet de définir la vie de l'ennemi
+ * @param li pointeur sur la liste
+ * @param index de l'ennemi
+ * @param v vie de l'ennemi
+ */
+void setEnnemiVie(Liste *li, int index, int v) {
+    Liste *acctuel = li;
+    Ennemi *e = NULL;
+
+    if (index == 0) {
+        e = &li->en;
+    } else {
+        for (int i = 0; i < index; i++) {
+            acctuel = acctuel->suivant;
+            e = &acctuel->en;
+        }
+    }
+
+    e->vie = v;
+}
+
+/**
+ * Permet de définir la taille de l'ennemi
+ * @param li pointeur sur la liste
+ * @param w largeur de l'ennemi
+ * @param h hauteur de l'ennemi
+ */
+void setEnemmiTaille(Liste *li, int index, int w, int h) {
+    Liste *acctuel = li;
+    Ennemi *e = NULL;
+
+    if (index == 0) {
+        e = &li->en;
+    } else {
+        for (int i = 0; i < index; i++) {
+            acctuel = acctuel->suivant;
+            e = &acctuel->en;
+        }
+    }
+
+    e->forme.w = w;
+    e->forme.h = h;
+}
