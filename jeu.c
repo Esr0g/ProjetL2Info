@@ -48,7 +48,7 @@ void jouer(SDL_Renderer* pRenderer) {
 /*----------------------------- Boucle principale d'une partie -------------------------*/
 	while (partieContinuer) {
 		SDL_Event eventsJeu;
-
+		 
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
 
 		/* Active le timer de spawn si il n'est pas activé*/

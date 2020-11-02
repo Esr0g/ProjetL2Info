@@ -19,13 +19,28 @@ typedef struct Base {
     SDL_Rect base;
 }Base;
 
+/*Définition d'une tourelle */
+typedef struct Tourelle {
+    int vie;
+    int degats;
+    int vitesseAttaque;
+    int type;
+    SDL_Rect forme;
+}Tourelle;
+
+/* Définition d'une liste de tourelle */
+typedef struct ElementListeTourelle {
+    Tourelle tourelle;
+    struct ElementListeTourelle *suivant;
+}ListeTourelle;
+
 /* Définition de la liste */
 typedef struct ElementListe {
     Ennemi en;
     struct ElementListe *suivant;
 }ListeEnnemi;
 
-/* Prototypes */
+/* Prototypes ListeEnnemi */
 Bool estVide(ListeEnnemi *li);
 int ajouterEnnemi(ListeEnnemi **li);
 ListeEnnemi *supprimerTete(ListeEnnemi **li);
@@ -37,5 +52,7 @@ void definirEnnemiListe(ListeEnnemi *li, int index, int v, int x, int y, int w, 
 void setEnnemiPosition(ListeEnnemi *li, int index, int x, int y);
 void setEnnemiVie(ListeEnnemi *li, int index, int v);
 void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h);
+
+/* prototypes ListeTourelle */
 
 #endif
