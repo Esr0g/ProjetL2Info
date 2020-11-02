@@ -31,7 +31,7 @@ void jouer(SDL_Renderer* pRenderer) {
 	Base base01; base01.base.h = 64; base01.base.w = 128 ; base01.base.x = 448; base01.base.y = 896; base01.vie = 3;
 	
 	
-	Liste *listeEnnemi = NULL; // initialisation de la liste
+	ListeEnnemi *listeEnnemi = NULL; // initialisation de la liste
 	int nbEnnemi = 5; // nombre d'ennmis choisi
 
 	/* Permet de faire un timer pour le spawn des énnemis */
@@ -135,7 +135,7 @@ void limiteFPS(unsigned int limite) {
  * de la gauche
  */
 Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
-	Liste **li = parametre;
+	ListeEnnemi **li = parametre;
 	Ennemi *e = NULL;
 	for (int i = 0; i < listeTaille(*li); i++) {
 		e = getEnnemi(*li, i);
@@ -157,7 +157,7 @@ Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
 /**
  * Permet de colorer tous les ennemis qui sont dans une liste
  */
-void colorationEnnemi(SDL_Renderer *pRenderer, Liste *li) {
+void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
 	SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
 	
 	for (int i = 0; i < listeTaille(li); i++) {
@@ -171,7 +171,7 @@ void colorationEnnemi(SDL_Renderer *pRenderer, Liste *li) {
  * leur position de départ
  */
 Uint32 creationEnnemi(Uint32 intervalle, void *parametre) {
-	Liste **li = parametre;
+	ListeEnnemi **li = parametre;
 
 	ajouterEnnemi(&(*li));
 	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, X_DEPART_ENNEMI_1, Y_DEPART_ENNEMI_1, W_ENNEMI, H_ENNEMI);

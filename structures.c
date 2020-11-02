@@ -9,10 +9,10 @@
  * @param li pointeur de pointeur de la liste
  * @return 0 si tous s'est bien passé ou -1 si l'allocation dynamique à échouée
  */ 
-int ajouterEnnemi(Liste **li) {
+int ajouterEnnemi(ListeEnnemi **li) {
     Ennemi ennemi;
-    Liste *element;
-    element = (Liste*)malloc(sizeof(Liste));
+    ListeEnnemi *element;
+    element = (ListeEnnemi*)malloc(sizeof(ListeEnnemi));
 
     if (element == NULL) {
         return -1;
@@ -28,7 +28,7 @@ int ajouterEnnemi(Liste **li) {
 /**
  * @return true si la liste est vide
  */
-Bool estVide(Liste *li) {
+Bool estVide(ListeEnnemi *li) {
     if (li == NULL) {
         return true;
     }
@@ -41,8 +41,8 @@ Bool estVide(Liste *li) {
  * @param li double pointeur de la liste
  * @return li un pointeur de la liste ou NULL si la liste est vide
  */
-Liste *supprimerTete(Liste **li) {
-    Liste *elementSuivant = NULL;
+ListeEnnemi *supprimerTete(ListeEnnemi **li) {
+    ListeEnnemi *elementSuivant = NULL;
 
     if (estVide(*li)) {
         return NULL;
@@ -61,7 +61,7 @@ Liste *supprimerTete(Liste **li) {
  * @param li pointeur d'une liste
  * @return size la taille de la liste
  */
-int listeTaille(Liste *li) {
+int listeTaille(ListeEnnemi *li) {
     int taille = 0;
 
     if (!estVide(li)) {
@@ -80,10 +80,10 @@ int listeTaille(Liste *li) {
  * @param index de l'élément à supprimer
  * @return li pointeur de la liste ou NULL si la liste est vide
  */
-Liste *supprimerEnnemi(Liste **li, int index) {
+ListeEnnemi *supprimerEnnemi(ListeEnnemi **li, int index) {
 
-    Liste *acctuel = *li;
-    Liste *temp = NULL;
+    ListeEnnemi *acctuel = *li;
+    ListeEnnemi *temp = NULL;
 
     if (index == 0) {
         return supprimerTete(&(*li));
@@ -108,9 +108,9 @@ Liste *supprimerEnnemi(Liste **li, int index) {
  * @param li double pointeur de la liste
  * @return une liste vide
  */
-Liste *supprimerTout (Liste **li) {
+ListeEnnemi *supprimerTout (ListeEnnemi **li) {
 
-    Liste *elementSuivant;
+    ListeEnnemi *elementSuivant;
 
     if (estVide(*li)) {
         return NULL;
@@ -133,7 +133,7 @@ Liste *supprimerTout (Liste **li) {
  * @param index de l'ennemi (compris entre 1 et la taille de la liste);
  * @return e l'ennemi à l'index choisi
  */
-Ennemi *getEnnemi (Liste *li, int index) {
+Ennemi *getEnnemi (ListeEnnemi *li, int index) {
     if (index == 0) {
         return &li->en;
     }
@@ -159,8 +159,8 @@ Ennemi *getEnnemi (Liste *li, int index) {
  * @param w largeur de l'ennemi
  * @param h hauteur de l'ennemi
  */
-void definirEnnemiListe(Liste *li, int index, int v, int x, int y, int w, int h) {
-    Liste *acctuel = li;
+void definirEnnemiListe(ListeEnnemi *li, int index, int v, int x, int y, int w, int h) {
+    ListeEnnemi *acctuel = li;
     Ennemi *e = NULL;
 
     if (index == 0) {
@@ -186,8 +186,8 @@ void definirEnnemiListe(Liste *li, int index, int v, int x, int y, int w, int h)
  * @param x
  * @param y
  */
-void setEnnemiPosition(Liste *li, int index, int x, int y) {
-    Liste *acctuel = li;
+void setEnnemiPosition(ListeEnnemi *li, int index, int x, int y) {
+    ListeEnnemi *acctuel = li;
     Ennemi *e = NULL;
 
     if (index == 0) {
@@ -209,8 +209,8 @@ void setEnnemiPosition(Liste *li, int index, int x, int y) {
  * @param index de l'ennemi
  * @param v vie de l'ennemi
  */
-void setEnnemiVie(Liste *li, int index, int v) {
-    Liste *acctuel = li;
+void setEnnemiVie(ListeEnnemi *li, int index, int v) {
+    ListeEnnemi *acctuel = li;
     Ennemi *e = NULL;
 
     if (index == 0) {
@@ -231,8 +231,8 @@ void setEnnemiVie(Liste *li, int index, int v) {
  * @param w largeur de l'ennemi
  * @param h hauteur de l'ennemi
  */
-void setEnemmiTaille(Liste *li, int index, int w, int h) {
-    Liste *acctuel = li;
+void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h) {
+    ListeEnnemi *acctuel = li;
     Ennemi *e = NULL;
 
     if (index == 0) {
