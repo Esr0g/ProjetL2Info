@@ -23,19 +23,19 @@ typedef struct Base {
 typedef struct ElementListe {
     Ennemi en;
     struct ElementListe *suivant;
-}Liste;
+}ListeEnnemi;
 
 /* Prototypes */
-Bool estVide(Liste *li);
-int ajouterEnnemi(Liste **li);
-Liste *supprimerTete(Liste **li);
-int listeTaille(Liste *li);
-Liste *supprimerEnnemi(Liste **li, int index);
-Liste *supprimerTout(Liste **li);
-Ennemi *getEnnemi(Liste *li, int index);
-void definirEnnemiListe(Liste *li, int index, int v, int x, int y, int w, int h);
-void setEnnemiPosition(Liste *li, int index, int x, int y);
-void setEnnemiVie(Liste *li, int index, int v);
-void setEnemmiTaille(Liste *li, int index, int w, int h);
+Bool estVide(ListeEnnemi *li);
+int ajouterEnnemi(ListeEnnemi **li);
+ListeEnnemi *supprimerTete(ListeEnnemi **li);
+int listeTaille(ListeEnnemi *li);
+ListeEnnemi *supprimerEnnemi(ListeEnnemi **li, int index);
+ListeEnnemi *supprimerTout(ListeEnnemi **li);
+Ennemi *getEnnemi(ListeEnnemi *li, int index);
+void definirEnnemiListe(ListeEnnemi *li, int index, int v, int x, int y, int w, int h);
+void setEnnemiPosition(ListeEnnemi *li, int index, int x, int y);
+void setEnnemiVie(ListeEnnemi *li, int index, int v);
+void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h);
 
 #endif
