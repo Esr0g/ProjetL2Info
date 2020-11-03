@@ -54,5 +54,5 @@ Ajout d'un menu dans main avec choix pour jouer.
 ### Semaine 4
 
 Ajout d'un fichier constantes.h avec les constantes du jeu  
-Ajout d'un fichier structure.c et structure.h avec les définitions des ennemis, des tourelles et des listes ainsi que toutes les fonction associée  
+Ajout d'un fichier structure.c et structure.h avec les définitions des ennemis, des tourelles et des listes ainsi que toutes les fonctions associées  
 Affichage des ennemis avec ajout à une liste les uns après les autres. Ils se déplacent à une vitesse constante à l'aide d'un timer et disparraissent (de la liste et de l'écran) lorsqu'ils rentrent en collision avec la base.  
