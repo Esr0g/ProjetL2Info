@@ -31,7 +31,7 @@ Puis l'améliorer au fur et à mesure du projet avec :
 ## Usage
 
 git clone https://github.com/Esr0g/ProjetL2Info.git  
-cd ProjetL2Info  
+se placer dans un terminale dans ProjetL2Info  
 make   
 ./towerDefence  
 
