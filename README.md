@@ -5,7 +5,7 @@ Faire un tower defence fonctionnel en 2D au début tout simple
 Puis l'améliorer au fur et à mesure du projet avec :  
 	* Menu avec choix (quitter, jouer).  
 	* Definition d'une base (vie et forme (SDL_Rect)):  
-		'* La base perd 1 point de vie lorsque un ennemis la touche.'  
+		`- La base perd 1 point de vie lorsque un ennemis la touche.`  
 	- Ennemis qui se déplacent en temps réels :
 		- Struct ennemi définis par sa vie et sa forme (SDL_Rect)
 		- Les "ennemis" sont ajoutés au fur et à mesure dans une liste à l'aide d'un timer au début de la partie.
@@ -23,22 +23,22 @@ Puis l'améliorer au fur et à mesure du projet avec :
 
 
 ## Prérequis 
-- SDL2
+- SDL2  
 
 ## Usage
 
-git clone https://github.com/Esr0g/ProjetL2Info.git
-cd ProjetL2Info
-make 
-./towerDefence
+git clone https://github.com/Esr0g/ProjetL2Info.git  
+cd ProjetL2Info  
+make   
+./towerDefence  
 
 ## Suivi
 
 
 ### Semaine 1
 
-On a implémenté la base de l'affichage 
-Création d'une vague d'ennemis qui se déplace 
+On a implémenté la base de l'affichage  
+Création d'une vague d'ennemis qui se déplace  
 Difficulté  : gestion de la liste d'ennemi    
 
 ### Semaine 2
