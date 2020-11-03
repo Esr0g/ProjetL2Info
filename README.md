@@ -40,11 +40,19 @@ make
 
 ### Semaine 1
 
-On a implémenté la base de l'affichage  
-Création d'une vague d'ennemis qui se déplace  
-Difficulté  : gestion de la liste d'ennemi    
+Implémentation de la SDL pour afficher uniquement le fond  
 
 ### Semaine 2
-	
-	
-	
+
+Création de la boucle principale dans main.c avec le code de bases pour quitter.  
+
+### Semaine 3
+
+Ajout d'une fonction jeu dans jeu.c avec son header. Boucle principale d'une partie  
+Ajout d'un menu dans main avec choix pour jouer.
+
+### Semaine 4
+
+Ajout d'un fichier constantes.h avec les constantes du jeu  
+Ajout d'un fichier structure.c et structure.h avec les définitions des ennemis, des tourelles et des listes ainsi que toutes les fonction associée  
+Affichage des ennemis avec ajout à une liste les uns après les autres. Ils se déplacent à une vitesse constante à l'aide d'un timer et disparraissent (de la liste et de l'écran) lorsqu'ils rentrent en collision avec la base.  
