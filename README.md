@@ -5,7 +5,7 @@ Faire un tower defence fonctionnel en 2D au début tout simple
 Puis l'améliorer au fur et à mesure du projet avec :  
 	* Menu avec choix (quitter, jouer).  
 	* Definition d'une base (vie et forme (SDL_Rect)):  
-		`* La base perd 1 point de vie lorsque un ennemis la touche.`  
+		'* La base perd 1 point de vie lorsque un ennemis la touche.'  
 	- Ennemis qui se déplacent en temps réels :
 		- Struct ennemi définis par sa vie et sa forme (SDL_Rect)
 		- Les "ennemis" sont ajoutés au fur et à mesure dans une liste à l'aide d'un timer au début de la partie.
