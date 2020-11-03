@@ -3,7 +3,7 @@
 ## But du projet 
 Faire un tower defence fonctionnel en 2D au début tout simple  
 Puis l'améliorer au fur et à mesure du projet avec :  
-	* Menu avec choix (quitter, jouer).  
+	*- Menu avec choix (quitter, jouer).  
 	* Definition d'une base (vie et forme (SDL_Rect)):  
 		`* Une sous-puce`  
 		`- La base perd 1 point de vie lorsque un ennemis la touche.`  
