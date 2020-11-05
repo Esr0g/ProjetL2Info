@@ -28,25 +28,25 @@ typedef struct Tourelle {
     SDL_Rect forme;
 }Tourelle;
 
-/* Définition d'une liste de tourelle */
+/* Définition d'une liste de tourelles */
 typedef struct ElementListeTourelle {
     Tourelle tourelle;
     struct ElementListeTourelle *suivant;
 }ListeTourelle;
 
-/* Définition de la liste */
+/* Définition d'une liste d'ennemis */
 typedef struct ElementListe {
     Ennemi en;
     struct ElementListe *suivant;
 }ListeEnnemi;
 
 /* Prototypes ListeEnnemi */
-Bool estVide(ListeEnnemi *li);
+Bool listeEstVideEnnemi(ListeEnnemi *li);
 int ajouterEnnemi(ListeEnnemi **li);
-ListeEnnemi *supprimerTete(ListeEnnemi **li);
-int listeTaille(ListeEnnemi *li);
+ListeEnnemi *supprimerTeteListeE(ListeEnnemi **li);
+int listeTailleEn (ListeEnnemi *li);
 ListeEnnemi *supprimerEnnemi(ListeEnnemi **li, int index);
-ListeEnnemi *supprimerTout(ListeEnnemi **li);
+ListeEnnemi *supprimerToutEn(ListeEnnemi **li);
 Ennemi *getEnnemi(ListeEnnemi *li, int index);
 void definirEnnemiListe(ListeEnnemi *li, int index, int v, int x, int y, int w, int h);
 void setEnnemiPosition(ListeEnnemi *li, int index, int x, int y);
@@ -54,5 +54,12 @@ void setEnnemiVie(ListeEnnemi *li, int index, int v);
 void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h);
 
 /* prototypes ListeTourelle */
+Bool listeEstVideTourelle (ListeTourelle *li);
+int ajouterTourelle (ListeTourelle **li);
+ListeTourelle *supprimerTeteListeT (ListeTourelle **li);
+int listeTailleTour (ListeTourelle *li);
+ListeTourelle *supprimerTourelle (ListeTourelle **li, int index);
+ListeTourelle *supprimerToutTour(ListeTourelle **li);
+Tourelle *getTourelle(ListeTourelle *li, int index);
 
 #endif

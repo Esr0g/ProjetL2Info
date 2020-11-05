@@ -58,19 +58,19 @@ void jouer(SDL_Renderer* pRenderer) {
 		}
 
 		/* Désactive le timer de spaxn lorsque le nombre d'énnemis est atteint */
-		if (listeTaille(listeEnnemi) == nbEnnemi) {
+		if (listeTailleEn(listeEnnemi) == nbEnnemi) {
 			SDL_RemoveTimer(initialisationListeEnnemi);
 		}
 
 		/* Active le timer de déplcaement uniquement lorsque il y a des énnemis */
-		if ((listeTaille(listeEnnemi) > 0) && (!mouvementEnnemiBool)) {
+		if ((listeTailleEn(listeEnnemi) > 0) && (!mouvementEnnemiBool)) {
 			mouvementEnnemi = SDL_AddTimer(VITESSE_DEPLACEMENT_ENNEMI, bougerEnnemis, &listeEnnemi);
 			mouvementEnnemiBool = true;
-		} else if (listeTaille == 0 && mouvementEnnemiBool) {
+		} else if (listeTailleEn == 0 && mouvementEnnemiBool) {
 			SDL_RemoveTimer(mouvementEnnemi);
 		}
 
-		for (int i = 0; i < listeTaille(listeEnnemi); i++) {
+		for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
 			if (SDL_HasIntersection(&getEnnemi(listeEnnemi, i)->forme, &base01.base)) {
 				supprimerEnnemi(&listeEnnemi, i);
 				base01.vie--;
@@ -81,7 +81,7 @@ void jouer(SDL_Renderer* pRenderer) {
 
 		/* Color les énnemis lorsqu'il y'en a */
 		limiteFPS(limite);
-		if (!estVide(listeEnnemi)) {
+		if (!listeEstVideEnnemi(listeEnnemi)) {
 			colorationEnnemi(pRenderer, listeEnnemi);
 		}
 		
@@ -107,7 +107,7 @@ void jouer(SDL_Renderer* pRenderer) {
 /*--------------------- Fin de la boucle principale d'une partie ------------------*/
 
 	SDL_DestroyTexture(pTextureFond);
-	listeEnnemi = supprimerTout(&listeEnnemi);
+	listeEnnemi = supprimerToutEn(&listeEnnemi);
 	SDL_RemoveTimer(initialisationListeEnnemi);
 	SDL_RemoveTimer(mouvementEnnemi);
 }
@@ -137,7 +137,7 @@ void limiteFPS(unsigned int limite) {
 Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
 	ListeEnnemi **li = parametre;
 	Ennemi *e = NULL;
-	for (int i = 0; i < listeTaille(*li); i++) {
+	for (int i = 0; i < listeTailleEn(*li); i++) {
 		e = getEnnemi(*li, i);
 
 		if (e->forme.x < 396 && e->forme.y == 268) {
@@ -160,7 +160,7 @@ Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
 	SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
 	
-	for (int i = 0; i < listeTaille(li); i++) {
+	for (int i = 0; i < listeTailleEn(li); i++) {
 		SDL_RenderFillRect(pRenderer, &getEnnemi(li, i)->forme);
 	}
 }

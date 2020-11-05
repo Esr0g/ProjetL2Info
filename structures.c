@@ -28,7 +28,7 @@ int ajouterEnnemi(ListeEnnemi **li) {
 /**
  * @return true si la liste est vide
  */
-Bool estVide(ListeEnnemi *li) {
+Bool listeEstVideEnnemi(ListeEnnemi *li) {
     if (li == NULL) {
         return true;
     }
@@ -41,10 +41,10 @@ Bool estVide(ListeEnnemi *li) {
  * @param li double pointeur de la liste
  * @return li un pointeur de la liste ou NULL si la liste est vide
  */
-ListeEnnemi *supprimerTete(ListeEnnemi **li) {
+ListeEnnemi *supprimerTeteListeE(ListeEnnemi **li) {
     ListeEnnemi *elementSuivant = NULL;
 
-    if (estVide(*li)) {
+    if (listeEstVideEnnemi(*li)) {
         return NULL;
     }
 
@@ -61,11 +61,11 @@ ListeEnnemi *supprimerTete(ListeEnnemi **li) {
  * @param li pointeur d'une liste
  * @return size la taille de la liste
  */
-int listeTaille(ListeEnnemi *li) {
+int listeTailleEn(ListeEnnemi *li) {
     int taille = 0;
 
-    if (!estVide(li)) {
-        while (!estVide(li)) {
+    if (!listeEstVideEnnemi(li)) {
+        while (!listeEstVideEnnemi(li)) {
             taille++;
             li = li->suivant;
         }
@@ -86,7 +86,7 @@ ListeEnnemi *supprimerEnnemi(ListeEnnemi **li, int index) {
     ListeEnnemi *temp = NULL;
 
     if (index == 0) {
-        return supprimerTete(&(*li));
+        return supprimerTeteListeE(&(*li));
     }
 
     for (int i = 0; i < index-1; i++) {
@@ -108,11 +108,11 @@ ListeEnnemi *supprimerEnnemi(ListeEnnemi **li, int index) {
  * @param li double pointeur de la liste
  * @return une liste vide
  */
-ListeEnnemi *supprimerTout (ListeEnnemi **li) {
+ListeEnnemi *supprimerToutEn (ListeEnnemi **li) {
 
     ListeEnnemi *elementSuivant;
 
-    if (estVide(*li)) {
+    if (listeEstVideEnnemi(*li)) {
         return NULL;
     } else {
 
@@ -246,4 +246,147 @@ void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h) {
 
     e->forme.w = w;
     e->forme.h = h;
+}
+
+
+/*-----------------------------------------Fonctions sur les listes de tourelles---------------------------------------------------*/
+
+/**
+ * @return true si la liste est vide
+ */
+Bool listeEstVideTourelle (ListeTourelle *li) {
+    if (li == NULL) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Permet d'ajouter une nouvelle tourelle à la liste
+ * @param li pointeur de pointeur de la liste
+ * @return 0 si tous s'est bien passé ou -1 si l'allocation dynamique à échouée
+ */ 
+int ajouterTourelle (ListeTourelle **li) {
+    Tourelle tour;
+    ListeTourelle *element;
+    element = (ListeTourelle*)malloc(sizeof(ListeTourelle));
+
+    if (element == NULL) {
+        return -1;
+    }
+
+    element->tourelle = tour;
+    element->suivant = *li;
+    *li = element;
+
+    return 0;
+}
+
+/**
+ * Supprimer le premier élément de la liste
+ * @param li double pointeur de la liste
+ * @return li un pointeur de la liste ou NULL si la liste est vide
+ */
+ListeTourelle *supprimerTeteListeT (ListeTourelle **li) {
+    ListeTourelle *elementSuivant = NULL;
+
+    if (listeEstVideTourelle(*li)) {
+        return NULL;
+    }
+
+    elementSuivant = (*li)->suivant;
+    free(*li);
+    *li = elementSuivant;
+    free(elementSuivant);
+
+    return *li;
+}
+
+/**
+ * Retourne la taille de la liste
+ * @param li pointeur d'une liste
+ * @return size la taille de la liste
+ */
+int listeTailleTour (ListeTourelle *li) {
+    int taille = 0;
+
+    if (!listeEstVideTourelle(li)) {
+        while (!listeEstVideTourelle(li)) {
+            taille++;
+            li = li->suivant;
+        }
+    }
+
+    return taille;
+}
+
+/**
+ * Suprime un élément à un index précis
+ * @param li double pointeur de la liste
+ * @param index de l'élément à supprimer
+ * @return li pointeur de la liste ou NULL si la liste est vide
+ */
+ListeTourelle *supprimerTourelle (ListeTourelle **li, int index) {
+
+    ListeTourelle *acctuel = *li;
+    ListeTourelle *temp = NULL;
+
+    if (index == 0) {
+        return supprimerTeteListeT(&(*li));
+    }
+
+    for (int i = 0; i < index-1; i++) {
+        if (acctuel->suivant == NULL) {
+            return NULL;
+        }
+        acctuel = acctuel->suivant;
+    }
+
+    temp = acctuel->suivant;
+    acctuel->suivant = temp->suivant;
+    free(temp);
+
+    return *li;
+}
+
+/**
+ * Supprime tous les éléments de la liste
+ * @param li double pointeur de la liste
+ * @return une liste vide
+ */
+ListeTourelle *supprimerToutTour(ListeTourelle **li) {
+
+    ListeTourelle *elementSuivant;
+
+    if (listeEstVideTourelle(*li)) {
+        return NULL;
+    } else {
+
+        while (*li != NULL) {
+            elementSuivant = NULL;
+            elementSuivant = (*li)->suivant;
+            free(*li);
+            *li = elementSuivant;
+        }
+
+        return *li;
+    } 
+}
+
+Tourelle *getTourelle(ListeTourelle *li, int index) {
+
+    if (index == 0) {
+        return &li->tourelle;
+    }
+
+    Tourelle *t;
+
+    for (int i = 0; i < index; i++) {
+        li = li->suivant;
+        t = NULL;
+        t = &li->tourelle;
+    }
+
+    return t;
 }
