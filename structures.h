@@ -19,6 +19,13 @@ typedef struct Base {
     SDL_Rect base;
 }Base;
 
+/* Définition d'une case du terrain */
+typedef struct CaseTerrain {
+    Bool occupationEmplacement;
+    Bool emplacementInterdi;
+    SDL_Rect position;
+}Case;
+
 /*Définition d'une tourelle */
 typedef struct Tourelle {
     int vie;
