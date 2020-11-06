@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL2/SDL2_rotozoom.h>
 
 #include "jeu.h"
 #include "structures.h"
@@ -62,7 +64,7 @@ void jouer(SDL_Renderer* pRenderer) {
 
 		/* Active le timer de spawn si il n'est pas activé*/
 		if (!initialisationListeEnnemiBool) {
-			initialisationListeEnnemi = SDL_AddTimer((VITESSE_DEPLACEMENT_ENNEMI * (H_ENNEMI + 20)), creationEnnemi, &listeEnnemi);
+			initialisationListeEnnemi = SDL_AddTimer((VITESSE_DEPLACEMENT_ENNEMI * (TAILLE_ENNEMI + 20)), creationEnnemi, &listeEnnemi);
 			initialisationListeEnnemiBool = true;
 		}
 
@@ -94,6 +96,13 @@ void jouer(SDL_Renderer* pRenderer) {
 			colorationEnnemi(pRenderer, listeEnnemi);
 		}
 		
+		/* Color les cercles */
+		if (!listeEstVideTourelle(listeTourelle)) {
+			for (int i = 0; i < listeTailleTour(listeTourelle); i++) {
+				filledCircleRGBA (pRenderer, getTourelle(listeTourelle, i)->range.x, getTourelle(listeTourelle, i)->range.y, getTourelle(listeTourelle, i)->range.rayon, 149, 126, 118, 100);
+			}
+		}
+
 		/* Color les tourelles lorsqu'il y'en a */
 		if(!listeEstVideTourelle(listeTourelle)) {
 			colorationTourelle(pRenderer, listeTourelle);
@@ -182,10 +191,13 @@ Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
  * Permet de colorer tous les ennemis qui sont dans une liste
  */
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
-	SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0);
-	
+
 	for (int i = 0; i < listeTailleEn(li); i++) {
-		SDL_RenderFillRect(pRenderer, &getEnnemi(li, i)->forme);
+				boxRGBA(pRenderer, getEnnemi(li, i)->forme.x + TAILLE_ENNEMI, 
+				getEnnemi(li, i)->forme.y, 
+				getEnnemi(li, i)->forme.x, 
+				getEnnemi(li, i)->forme.y + TAILLE_ENNEMI,
+				 0, 0, 0, 255 );
 	}
 }
 
@@ -198,7 +210,7 @@ Uint32 creationEnnemi(Uint32 intervalle, void *parametre) {
 	ListeEnnemi **li = parametre;
 
 	ajouterEnnemi(&(*li));
-	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, X_DEPART_ENNEMI_1, Y_DEPART_ENNEMI_1, W_ENNEMI, H_ENNEMI);
+	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, -TAILLE_ENNEMI, Y_DEPART_ENNEMI_1 + ((64 - TAILLE_ENNEMI)/2) , TAILLE_ENNEMI, TAILLE_ENNEMI);
 	return intervalle;
 }
 
@@ -295,19 +307,28 @@ Bool possibilitePositionnerTourelle (SDL_Point *point, Case **tab, int *n, int *
 
 void ajouterTourelleEtPositionnement (ListeTourelle **li, Case **tab, int n, int m) {
 	ajouterTourelle(&(*li));
-	(*li)->tourelle.forme.x = tab[n][m].position.x + 15;
-	(*li)->tourelle.forme.y = tab[n][m].position.y + 15;
-	(*li)->tourelle.forme.w = 34;
-	(*li)->tourelle.forme.h = 34;
+	(*li)->tourelle.forme.x = tab[n][m].position.x + ((64 - TAILLE_TOURELLE )/2);
+	(*li)->tourelle.forme.y = tab[n][m].position.y + ((64 - TAILLE_TOURELLE)/2);
+	(*li)->tourelle.forme.w = TAILLE_TOURELLE;
+	(*li)->tourelle.forme.h = TAILLE_TOURELLE;
+	(*li)->tourelle.range.x = tab[n][m].position.x + 32;
+	(*li)->tourelle.range.y = tab[n][m].position.y + 32;
+	(*li)->tourelle.range.rayon = RAYON_DEPART_TOURELLE;
+	
+	tab[n][m].occupationEmplacement = true;
+
 }
 
 /**
  * Permet de colorer toutes les tourelles qui sont dans une liste
  */
 void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li) {
-	SDL_SetRenderDrawColor(pRenderer, 0, 255, 0, 0);
 	
 	for (int i = 0; i < listeTailleTour(li); i++) {
-		SDL_RenderFillRect(pRenderer, &getTourelle(li, i)->forme);
+		boxRGBA(pRenderer, getTourelle(li, i)->forme.x + TAILLE_TOURELLE, 
+				getTourelle(li, i)->forme.y, 
+				getTourelle(li, i)->forme.x, 
+				getTourelle(li, i)->forme.y + TAILLE_TOURELLE,
+				 0, 255, 0, 255 );
 	}
 }

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = `sdl2-config --cflags --libs`
-LDFLAGS = 
+LDFLAGS = -lSDL2_gfx
 INCLUDES = 
 EXEC = towerDefence
 SRC = $(wildcard *.c)
@@ -10,10 +10,10 @@ OBJ = $(SRC:.c=.o)
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm -rf *.o *~

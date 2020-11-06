@@ -26,6 +26,13 @@ typedef struct CaseTerrain {
     SDL_Rect position;
 }Case;
 
+/* Définition d'un cercle */
+typedef struct Cercle {
+    Sint16 x;
+    Sint16 y;
+    Sint16 rayon;
+}Cercle;
+
 /*Définition d'une tourelle */
 typedef struct Tourelle {
     int vie;
@@ -33,6 +40,7 @@ typedef struct Tourelle {
     int vitesseAttaque;
     int type;
     SDL_Rect forme;
+    Cercle range;
 }Tourelle;
 
 /* Définition d'une liste de tourelles */
