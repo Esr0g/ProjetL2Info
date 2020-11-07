@@ -26,7 +26,8 @@ Puis l'améliorer au fur et à mesure du projet avec :
 (Cette liste va surement évoluée)  
 
 ## Prérequis 
-- SDL2  
+- SDL2 
+- SDL2_gfx (sudo apt install libsdl2-gfx-1.0-0 libsdl2-gfx-dev)  
 
 ## Usage
 
@@ -53,4 +54,10 @@ Affichage des ennemis avec ajout à une liste les uns après les autres. Ils se 
 
 ### Semaine 3
 
-(en cours)  
+Ajout des fonctions pour gérer la liste de tourelle  
+Ajout de la librairie SDL2_gfx qui permet de gérer l'affichage de cercle  
+Ajout d'une structure cerlce  
+Les tourelles sont maintenant définis en plus par un cercle qui est leur portée d'attaque: le cercle s'afficher sur la map avec de la transparence  
+Ajout d'une structure case qui représentent le terrain de jeu: un case est défini par un rectgle et des boolean  
+La map est maintenant représentée par un tableau de case (Ajout des fonction pour allouer la mémoire au tableau à double entrée et pour libérer la mémoire)  
+Il est maintenant possible d'ajouter une tourelle avec un clic de la souris sur les cases de la map (impossible d'en mettre plusieurs sur une même case, impossible de poser une tourelle sur le chemin des ennemis ou sur la base)  
