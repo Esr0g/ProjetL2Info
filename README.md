@@ -61,3 +61,5 @@ Les tourelles sont maintenant définis en plus par un cercle qui est leur porté
 Ajout d'une structure case qui représentent le terrain de jeu: un case est défini par un rectgle et des boolean  
 La map est maintenant représentée par un tableau de case (Ajout des fonction pour allouer la mémoire au tableau à double entrée et pour libérer la mémoire)  
 Il est maintenant possible d'ajouter une tourelle avec un clic de la souris sur les cases de la map (impossible d'en mettre plusieurs sur une même case, impossible de poser une tourelle sur le chemin des ennemis ou sur la base)  
+
+###Semain 4  
