@@ -17,4 +17,12 @@ Bool possibilitePositionnerTourelle (SDL_Point *point, Case **tab, int *n, int *
 void ajouterTourelleEtPositionnement (ListeTourelle **li, Case **tab, int n, int m);
 void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li);
 
+/**
+ * Prototypes des fonctions pour les collision avec un cercle
+ * source: http://sdz.tdct.org/sdz/eorie-des-collisions.html
+ */
+Bool collisionPointCercle(int x, int y, Cercle C);
+int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By);
+Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1);
+
 #endif

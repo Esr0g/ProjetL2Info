@@ -108,6 +108,15 @@ void jouer(SDL_Renderer* pRenderer) {
 			colorationTourelle(pRenderer, listeTourelle);
 		}
 
+		/* Collision range tourelle avec ennemis: test */
+		if (!listeEstVideEnnemi(listeEnnemi) && !listeEstVideTourelle(listeTourelle)) {
+			for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
+				if (collisionCercleRectangle(getTourelle(listeTourelle, 0)->range, getEnnemi(listeEnnemi, i)->forme)) {
+					printf("Collision !");
+				}
+			}
+		}
+
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
 				case SDL_KEYDOWN:
@@ -331,4 +340,86 @@ void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li) {
 				getTourelle(li, i)->forme.y + TAILLE_TOURELLE,
 				 0, 255, 0, 255 );
 	}
+}
+
+/**
+ * Colision entre un point et un cercle
+ * source: http://sdz.tdct.org/sdz/eorie-des-collisions.html
+ */
+Bool collisionPointCercle(int x, int y, Cercle C) {
+   int d2 = (x-C.x)*(x-C.x) + (y-C.y)*(y-C.y);
+
+   if (d2>C.rayon*C.rayon) {
+
+      return false;
+   } else {
+
+      return true;
+   }
+}
+
+/**
+ * Permet de vérifier un des cas de colision avec un cercle
+ * source : http://sdz.tdct.org/sdz/eorie-des-collisions.html
+ */
+int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By) {
+   int ACx = Cx-Ax;
+   int ACy = Cy-Ay; 
+   int ABx = Bx-Ax;
+   int ABy = By-Ay; 
+   int BCx = Cx-Bx;
+   int BCy = Cy-By; 
+   int s1 = (ACx*ABx) + (ACy*ABy);
+   int s2 = (BCx*ABx) + (BCy*ABy); 
+
+   if (s1*s2>0) {
+
+    return 0;
+   }
+
+   return 1;
+}
+
+/**
+ * Renvoie true si il y'a une collision avec un rectangle
+ * source: http://sdz.tdct.org/sdz/eorie-des-collisions.html
+ */
+Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
+
+   SDL_Rect boxCercle;
+   boxCercle.h = C1.rayon * 2;
+   boxCercle.w = C1.rayon * 2;
+   boxCercle.x = C1.x - C1.rayon;
+   boxCercle.y = C1.y - C1.rayon;
+   SDL_Point p;
+   p.x = C1.x;
+   p.y = C1.y;
+
+   if (SDL_HasIntersection(&box1, &boxCercle) == 0) {
+
+    	return false;
+   }
+
+   if (collisionPointCercle(box1.x,box1.y,C1)==1
+    || collisionPointCercle(box1.x,box1.y+box1.h,C1)==1
+    || collisionPointCercle(box1.x+box1.w,box1.y,C1)==1
+    || collisionPointCercle(box1.x+box1.w,box1.y+box1.h,C1)==1) {
+
+    	return true;
+	}
+
+   if (SDL_PointInRect(&p, &box1)) {
+
+		return true;
+   }
+
+   int projvertical = projectionSurSegment(C1.x,C1.y,box1.x,box1.y,box1.x,box1.y+box1.h);
+   int projhorizontal = projectionSurSegment(C1.x,C1.y,box1.x,box1.y,box1.x+box1.w,box1.y); 
+
+   if (projvertical==1 || projhorizontal==1) {
+
+    	return true; 
+   }
+
+   return false; 
 }
