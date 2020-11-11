@@ -10,7 +10,6 @@
  * @return 0 si tous s'est bien passé ou -1 si l'allocation dynamique à échouée
  */ 
 int ajouterEnnemi(ListeEnnemi **li) {
-    Ennemi ennemi;
     ListeEnnemi *element;
     element = (ListeEnnemi*)malloc(sizeof(ListeEnnemi));
 
@@ -18,7 +17,6 @@ int ajouterEnnemi(ListeEnnemi **li) {
         return -1;
     }
 
-    element->en = ennemi;
     element->suivant = *li;
     *li = element;
 
@@ -46,12 +44,14 @@ ListeEnnemi *supprimerTeteListeE(ListeEnnemi **li) {
 
     if (listeEstVideEnnemi(*li)) {
         return NULL;
+    } else if (listeTailleEn(*li) == 1) {
+        free (*li);
+        (*li) = NULL;
+    } else {
+        elementSuivant = (*li)->suivant;
+        free(*li);
+        *li = elementSuivant;
     }
-
-    elementSuivant = (*li)->suivant;
-    free(*li);
-    *li = elementSuivant;
-    free(elementSuivant);
 
     return *li;
 }
@@ -268,7 +268,6 @@ Bool listeEstVideTourelle (ListeTourelle *li) {
  * @return 0 si tous s'est bien passé ou -1 si l'allocation dynamique à échouée
  */ 
 int ajouterTourelle (ListeTourelle **li) {
-    Tourelle tour;
     ListeTourelle *element;
     element = (ListeTourelle*)malloc(sizeof(ListeTourelle));
 
@@ -276,7 +275,6 @@ int ajouterTourelle (ListeTourelle **li) {
         return -1;
     }
 
-    element->tourelle = tour;
     element->suivant = *li;
     *li = element;
 
@@ -298,7 +296,6 @@ ListeTourelle *supprimerTeteListeT (ListeTourelle **li) {
     elementSuivant = (*li)->suivant;
     free(*li);
     *li = elementSuivant;
-    free(elementSuivant);
 
     return *li;
 }
@@ -389,4 +386,26 @@ Tourelle *getTourelle(ListeTourelle *li, int index) {
     }
 
     return t;
+}
+
+/**
+ * Permet de définir le nouveau temps entre 2 tire
+ * @param li pointeur sur la liste
+ * @param index del la tourelle
+ * @param tps nouveau temps
+ */
+void setTourelleTps (ListeTourelle *li, int index, int tps) {
+    ListeTourelle *acctuel = li;
+    Tourelle *t = NULL;
+
+    if (index == 0) {
+        t = &li->tourelle;
+    } else {
+        for (int i = 0; i < index; i++) {
+            acctuel = acctuel->suivant;
+            t = &acctuel->tourelle;
+        }
+    }
+
+    t->tpsEntre2Tire = tps;
 }

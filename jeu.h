@@ -10,12 +10,13 @@ Uint32 bougerEnnemis(Uint32 intervalle, void *parametre);
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li);
 Uint32 creationEnnemi(Uint32 intervalle, void *parametre);
 
-Case **allouerTab2D (int n, int m);
-void desallouerTab2D(Case **tab, int n);
+Cases **allouerTab2D (int n, int m);
+void desallouerTab2D(Cases **tab, int n);
 
-Bool possibilitePositionnerTourelle (SDL_Point *point, Case **tab, int *n, int *m);
-void ajouterTourelleEtPositionnement (ListeTourelle **li, Case **tab, int n, int m);
+Bool possibilitePositionnerTourelle (SDL_Point *point, Cases **tab, int *n, int *m);
+void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, int m);
 void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li);
+Bool souriSurTourelle(SDL_Point *p, ListeTourelle *li, int *tourelle);
 
 /**
  * Prototypes des fonctions pour les collision avec un cercle
@@ -24,5 +25,7 @@ void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li);
 Bool collisionPointCercle(int x, int y, Cercle C);
 int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By);
 Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1);
+
+void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt);
 
 #endif

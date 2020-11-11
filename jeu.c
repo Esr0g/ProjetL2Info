@@ -3,15 +3,17 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL2_rotozoom.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "jeu.h"
 #include "structures.h"
 #include "constantes.h"
+#include "textes.h"
 
 void jouer(SDL_Renderer* pRenderer) {
 
 	SDL_bool partieContinuer = SDL_TRUE;
-	
+
 	/* Chargelment de l'image du fond*/
     SDL_Surface *pFond = SDL_LoadBMP ("textures/Terrain.bmp");
     if (pFond == NULL) {
@@ -30,6 +32,7 @@ void jouer(SDL_Renderer* pRenderer) {
 
 	SDL_FreeSurface (pFond);
 
+	/* Initialisation de la base */
 	Base base01; base01.base.h = 64; base01.base.w = 128 ; base01.base.x = 448; base01.base.y = 896; base01.vie = 3;
 	
 	
@@ -39,7 +42,7 @@ void jouer(SDL_Renderer* pRenderer) {
 	ListeTourelle *listeTourelle = NULL; // initialisation de la liste de tourelle
 
 	/* Initialisation des cases du jeu */
-	Case **tabCase = allouerTab2D (15, 18);
+	Cases **tabCase = allouerTab2D (15, 18);
 	int ligne;
 	int colone;
 
@@ -54,9 +57,34 @@ void jouer(SDL_Renderer* pRenderer) {
 	/* Pour la limite des FPS */
 	unsigned int limite = 0;
 
+	/*Recupère la position de la souris ou la position du clic de la souris */
 	SDL_Point positionClicSouris;
+	SDL_Point positionSouri;
 
-/*----------------------------- Boucle principale d'une partie -------------------------*/
+	/* Initialisation du texte*/
+	TTF_Font* font = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);
+	SDL_Rect position;
+    SDL_Color maCouleurNoir = {0, 0, 0, 255};
+
+    SDL_Surface *police = TTF_RenderText_Blended(font, "Vie :", maCouleurNoir); 
+    SDL_Texture *texteVie = SDL_CreateTextureFromSurface(pRenderer, police);
+    SDL_QueryTexture(texteVie, NULL, NULL, &position.w, &position.h);
+
+    position.x = FENETRE_LARGEUR / 2 - position.w / 2;
+    position.y = FENETRE_HAUTEUR / 2 - position.h / 2;
+
+    SDL_FreeSurface(police);
+    TTF_CloseFont(font);
+	
+	/* Recupère le numero de la tourelle dans la liste pour afficher ça range */
+	int indexTourelle = 0;
+
+	/* Initialisation de quelques données concernant la partie */
+	int killTotal = 0;
+	int score = 0;
+	int argent = 400;
+
+/*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
 	while (partieContinuer) {
 		SDL_Event eventsJeu;
 		 
@@ -77,30 +105,37 @@ void jouer(SDL_Renderer* pRenderer) {
 		if ((listeTailleEn(listeEnnemi) > 0) && (!mouvementEnnemiBool)) {
 			mouvementEnnemi = SDL_AddTimer(VITESSE_DEPLACEMENT_ENNEMI, bougerEnnemis, &listeEnnemi);
 			mouvementEnnemiBool = true;
-		} else if (listeTailleEn == 0 && mouvementEnnemiBool) {
+		} else if (listeTailleEn(listeEnnemi) == 0 && mouvementEnnemiBool) {
 			SDL_RemoveTimer(mouvementEnnemi);
 		}
 
-		for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
-			if (SDL_HasIntersection(&getEnnemi(listeEnnemi, i)->forme, &base01.base)) {
-				supprimerEnnemi(&listeEnnemi, i);
-				base01.vie--;
+		/** Supprime un ennemi lorsqu'il rentre en collision avec la base ou lorsque ses point de vie atteigent 0*/
+		if (!listeEstVideEnnemi(listeEnnemi)) {
+			for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
+				if (SDL_HasIntersection(&getEnnemi(listeEnnemi, i)->forme, &base01.base)) {
+					supprimerEnnemi(&listeEnnemi, i);
+					base01.vie--;
+				} else if (getEnnemi(listeEnnemi, i)->vie <= 0) {
+					supprimerEnnemi(&listeEnnemi, i);
+					killTotal++;
+				}
 			}
 		}
 
 		limite = SDL_GetTicks() + FPS_LIMITE;
 
+		/* Color les cerlces lorsque la souri est dessus */
+		if (souriSurTourelle(&positionSouri, listeTourelle, &indexTourelle)) {
+			filledCircleRGBA (pRenderer, getTourelle(listeTourelle, indexTourelle)->range.x, 
+								getTourelle(listeTourelle, indexTourelle)->range.y, 
+								getTourelle(listeTourelle, indexTourelle)->range.rayon,
+								149, 126, 118, 100);
+		}
+
 		/* Color les énnemis lorsqu'il y'en a */
 		limiteFPS(limite);
 		if (!listeEstVideEnnemi(listeEnnemi)) {
 			colorationEnnemi(pRenderer, listeEnnemi);
-		}
-		
-		/* Color les cercles */
-		if (!listeEstVideTourelle(listeTourelle)) {
-			for (int i = 0; i < listeTailleTour(listeTourelle); i++) {
-				filledCircleRGBA (pRenderer, getTourelle(listeTourelle, i)->range.x, getTourelle(listeTourelle, i)->range.y, getTourelle(listeTourelle, i)->range.rayon, 149, 126, 118, 100);
-			}
 		}
 
 		/* Color les tourelles lorsqu'il y'en a */
@@ -108,14 +143,13 @@ void jouer(SDL_Renderer* pRenderer) {
 			colorationTourelle(pRenderer, listeTourelle);
 		}
 
-		/* Collision range tourelle avec ennemis: test */
+		/* Attaque des ennemis par les tourelles */
 		if (!listeEstVideEnnemi(listeEnnemi) && !listeEstVideTourelle(listeTourelle)) {
-			for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
-				if (collisionCercleRectangle(getTourelle(listeTourelle, 0)->range, getEnnemi(listeEnnemi, i)->forme)) {
-					printf("Collision !");
-				}
-			}
+			attaqueEnnemi (listeEnnemi, listeTourelle);
 		}
+
+		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
+        SDL_RenderCopy(pRenderer, texteVie, NULL, &position);
 
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
@@ -127,7 +161,7 @@ void jouer(SDL_Renderer* pRenderer) {
 							default:
 								break;
 						}
-					continue;
+					break;
 				case SDL_MOUSEBUTTONDOWN:
 					positionClicSouris.x = eventsJeu.button.x;
 					positionClicSouris.y = eventsJeu.button.y;
@@ -135,18 +169,23 @@ void jouer(SDL_Renderer* pRenderer) {
 					if (possibilitePositionnerTourelle(&positionClicSouris, tabCase, &ligne, &colone)) {
 						ajouterTourelleEtPositionnement (&listeTourelle, tabCase, ligne, colone);
 					}
-					continue;
+					break;
+				case SDL_MOUSEMOTION:
+					positionSouri.x = eventsJeu.motion.x;
+					positionSouri.y = eventsJeu.motion.y;
+					break;
             	default:
-                	continue;
+                	break;
 			}
 		}
 
 		SDL_RenderPresent (pRenderer);
 		
 	}
-/*--------------------- Fin de la boucle principale d'une partie ------------------*/
+/*-------------------------------------------------------- Fin de la boucle principale d'une partie ------------------------------------------------------*/
 
 	SDL_DestroyTexture(pTextureFond);
+	SDL_DestroyTexture(texteVie);
 	listeEnnemi = supprimerToutEn(&listeEnnemi);
 	listeTourelle = supprimerToutTour(&listeTourelle);
 	desallouerTab2D (tabCase, 15);
@@ -224,11 +263,11 @@ Uint32 creationEnnemi(Uint32 intervalle, void *parametre) {
 }
 
 /* Initialise le terrain au début de la partie */
-Case **allouerTab2D (int n, int m) {
-    Case **tabCase = malloc(sizeof(Case*) * n);
+Cases **allouerTab2D (int n, int m) {
+    Cases **tabCase = malloc(sizeof(Cases*) * n);
 
     for (int i = 0; i < n; i++) {
-        tabCase[i] = malloc(sizeof(Case) * m);
+        tabCase[i] = malloc(sizeof(Cases) * m);
     }
 
     for (int i = 0; i < n; i++) {
@@ -265,7 +304,7 @@ Case **allouerTab2D (int n, int m) {
 }
 
 /* Libère la mémoire à la fin de la partie */
-void desallouerTab2D(Case **tab, int n) {
+void desallouerTab2D(Cases **tab, int n) {
     for (int i = 0; i < n; i++) {
         free(tab[i]);
     }
@@ -281,11 +320,10 @@ void desallouerTab2D(Case **tab, int n) {
  * @param n correspond au début au nombre de ligne et à la fin à l'index de la case
  * @param m correspond au début au nombre de colone et à la fin à l'index de la case
  */
-Bool possibilitePositionnerTourelle (SDL_Point *point, Case **tab, int *n, int *m) {
+Bool possibilitePositionnerTourelle (SDL_Point *point, Cases **tab, int *n, int *m) {
 	Bool trouve = false;
 	int i = 0;
 	int j = 0;
-	SDL_bool b = SDL_FALSE;
 
 	while (i < *n && !trouve) {
 		j = 0;
@@ -314,7 +352,10 @@ Bool possibilitePositionnerTourelle (SDL_Point *point, Case **tab, int *n, int *
 	}
 }
 
-void ajouterTourelleEtPositionnement (ListeTourelle **li, Case **tab, int n, int m) {
+/**
+ * Permet d'ajouter les tourelles à la position du clic et de les initialiser avec leur valeur de départ
+ */
+void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, int m) {
 	ajouterTourelle(&(*li));
 	(*li)->tourelle.forme.x = tab[n][m].position.x + ((64 - TAILLE_TOURELLE )/2);
 	(*li)->tourelle.forme.y = tab[n][m].position.y + ((64 - TAILLE_TOURELLE)/2);
@@ -323,6 +364,9 @@ void ajouterTourelleEtPositionnement (ListeTourelle **li, Case **tab, int n, int
 	(*li)->tourelle.range.x = tab[n][m].position.x + 32;
 	(*li)->tourelle.range.y = tab[n][m].position.y + 32;
 	(*li)->tourelle.range.rayon = RAYON_DEPART_TOURELLE;
+	(*li)->tourelle.degats = 30;
+	(*li)->tourelle.vitesseAttaque = VITESSE_D_ATTAQUE_TOURELLE_DEPART;
+	(*li)->tourelle.tpsEntre2Tire = SDL_GetTicks();
 	
 	tab[n][m].occupationEmplacement = true;
 
@@ -341,6 +385,27 @@ void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li) {
 				 0, 255, 0, 255 );
 	}
 }
+
+Bool souriSurTourelle(SDL_Point *p, ListeTourelle *li, int *tourelle) {
+	Bool souriToucheTourelle =  false;
+	int i = 0;
+
+	if (!listeEstVideTourelle(li)) {
+		while (i < listeTailleTour(li) && !souriToucheTourelle) {
+			if (SDL_PointInRect(p, &getTourelle(li, i)->forme)) {
+				souriToucheTourelle = true;
+			} else {
+				i++;
+			}
+		}
+	}
+	
+	*tourelle = i;
+
+	return souriToucheTourelle;
+}
+
+/*-----------------------------------------------------------------Collision cercle - Rectangle ------------------------------------------------------*/
 
 /**
  * Colision entre un point et un cercle
@@ -381,7 +446,7 @@ int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By) {
 }
 
 /**
- * Renvoie true si il y'a une collision avec un rectangle
+ * Renvoie true si il y'a une collision entre un cercle et un rectangle
  * source: http://sdz.tdct.org/sdz/eorie-des-collisions.html
  */
 Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
@@ -422,4 +487,29 @@ Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
    }
 
    return false; 
+}
+
+/*-----------------------------------------------------------------Fin collision cercle - Rectangle ------------------------------------------------------*/
+
+void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
+	int tempsAuTick = SDL_GetTicks();
+	Bool collision = false;
+	int j = 0;
+
+	for (int i = 0; i < listeTailleTour(lt); i++) {
+		j = 0;
+
+		while (j < listeTailleEn(le) && !collision) {
+
+			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
+				if ((tempsAuTick - getTourelle(lt, i)->tpsEntre2Tire) > getTourelle(lt, i)->vitesseAttaque) {
+					getEnnemi(le, j)->vie = getEnnemi(le, j)->vie - getTourelle(lt, i)->degats;
+					getTourelle(lt, i)->tpsEntre2Tire = SDL_GetTicks();
+				}
+				collision = true;
+			} else {
+				j++;
+			}
+		}	
+	}
 }

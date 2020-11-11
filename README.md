@@ -28,6 +28,7 @@ Puis l'améliorer au fur et à mesure du projet avec :
 ## Prérequis 
 - SDL2 
 - SDL2_gfx (sudo apt install libsdl2-gfx-1.0-0 libsdl2-gfx-dev)  
+- SDL2_ttf (sudo apt install libsdl2-ttf-dev)  
 
 ## Usage
 
@@ -66,3 +67,6 @@ Il est maintenant possible d'ajouter une tourelle avec un clic de la souris sur 
 
 Ajout des fonctions pour permet de savoir si il y'a une collison entre un ennemi ou une tourelle  
 source des algo : http://sdz.tdct.org/sdz/eorie-des-collisions.html  
+Les tourelles attaques maintenant en fonction de leur vitesse d'attaque  
+Ajout de la librairie SDL_ttf  
+

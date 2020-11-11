@@ -24,7 +24,7 @@ typedef struct CaseTerrain {
     Bool occupationEmplacement;
     Bool emplacementInterdi;
     SDL_Rect position;
-}Case;
+}Cases;
 
 /* Définition d'un cercle */
 typedef struct Cercle {
@@ -41,6 +41,7 @@ typedef struct Tourelle {
     int type;
     SDL_Rect forme;
     Cercle range;
+    int tpsEntre2Tire;
 }Tourelle;
 
 /* Définition d'une liste de tourelles */
@@ -76,5 +77,6 @@ int listeTailleTour (ListeTourelle *li);
 ListeTourelle *supprimerTourelle (ListeTourelle **li, int index);
 ListeTourelle *supprimerToutTour(ListeTourelle **li);
 Tourelle *getTourelle(ListeTourelle *li, int index);
+void setTourelleTps(ListeTourelle *li, int index, int tps);
 
 #endif

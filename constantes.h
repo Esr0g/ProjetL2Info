@@ -13,5 +13,6 @@
 
 #define TAILLE_TOURELLE 34
 #define RAYON_DEPART_TOURELLE 150
+#define VITESSE_D_ATTAQUE_TOURELLE_DEPART 1000 // == 1 tire par seconde
 
 #endif

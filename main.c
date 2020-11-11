@@ -1,13 +1,15 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "constantes.h"
 #include "jeu.h"
 #include "structures.h"
 /* https://github.com/Esr0g/ProjetL2Info.git */
+/* valgrind --leak-check=full --show-reachable=yes --show-leak-kinds=all --error-limit=no --gen-suppressions=all --log-file=supdata.log ./towerDefence */
 
-int main(int argc, char *argv[])
+int main(void)
 {
     SDL_Window *pWindow = NULL;
     SDL_Renderer *pRenderer = NULL;
@@ -27,6 +29,12 @@ int main(int argc, char *argv[])
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
+
+    /* Initialisation de SDL_ttf qui permet de géré le texte */
+	if (TTF_Init() < 0) {
+		SDL_Log("ERREUR: Creation de la fenêtre > %s\n", TTF_GetError());
+		exit(EXIT_FAILURE);
+	}
 
     /*Créationdu Rendu*/
     pRenderer = SDL_CreateRenderer (pWindow, -1, SDL_RENDERER_ACCELERATED);
@@ -98,8 +106,9 @@ int main(int argc, char *argv[])
 /*-------------------------------------- Fin de la boucle principale --------------------------------------------*/
 
     SDL_DestroyTexture(pTextureMenu);
-    SDL_DestroyWindow (pWindow);
     SDL_DestroyRenderer (pRenderer);
+    SDL_DestroyWindow (pWindow);
+    TTF_Quit();
     SDL_Quit();
 
     return EXIT_SUCCESS;
