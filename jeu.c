@@ -8,7 +8,6 @@
 #include "jeu.h"
 #include "structures.h"
 #include "constantes.h"
-#include "textes.h"
 
 void jouer(SDL_Renderer* pRenderer) {
 
@@ -386,6 +385,10 @@ void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li) {
 	}
 }
 
+/**
+ * Renvoi un boolean pour savoir si la souris est sur une tourelle
+ * Retourne aussi l'index de la tourelle
+ */
 Bool souriSurTourelle(SDL_Point *p, ListeTourelle *li, int *tourelle) {
 	Bool souriToucheTourelle =  false;
 	int i = 0;
@@ -491,6 +494,9 @@ Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
 
 /*-----------------------------------------------------------------Fin collision cercle - Rectangle ------------------------------------------------------*/
 
+/**
+ * Les tourelles attaque les ennemis en fonction de leur vitesse d'attaque
+ */
 void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 	int tempsAuTick = SDL_GetTicks();
 	Bool collision = false;
@@ -504,6 +510,7 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
 				if ((tempsAuTick - getTourelle(lt, i)->tpsEntre2Tire) > getTourelle(lt, i)->vitesseAttaque) {
 					getEnnemi(le, j)->vie = getEnnemi(le, j)->vie - getTourelle(lt, i)->degats;
+					printf ("ennemi: %d, vie: %d\n", j, getEnnemi(le, j)->vie);
 					getTourelle(lt, i)->tpsEntre2Tire = SDL_GetTicks();
 				}
 				collision = true;
