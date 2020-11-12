@@ -4,6 +4,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL2_rotozoom.h>
 #include <SDL2/SDL_ttf.h>
+#include <string.h>
 
 #include "jeu.h"
 #include "structures.h"
@@ -62,15 +63,38 @@ void jouer(SDL_Renderer* pRenderer) {
 
 	/* Initialisation du texte*/
 	TTF_Font* font = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);
-	SDL_Rect position;
+	if (font == NULL) {
+		//Creation de l'erreur ?
+		  SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
+	}
+	
+	SDL_Rect positionTexteVie;
     SDL_Color maCouleurNoir = {0, 0, 0, 255};
+	
 
-    SDL_Surface *police = TTF_RenderText_Blended(font, "Vie :", maCouleurNoir); 
-    SDL_Texture *texteVie = SDL_CreateTextureFromSurface(pRenderer, police);
-    SDL_QueryTexture(texteVie, NULL, NULL, &position.w, &position.h);
+	char strTexteVie[100]   =   "Vie : " ;
+	char strNbVie[10];
+	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
+	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
 
-    position.x = FENETRE_LARGEUR / 2 - position.w / 2;
-    position.y = FENETRE_HAUTEUR / 2 - position.h / 2;
+	
+    SDL_Surface *police = TTF_RenderText_Blended(font, strTexteVie, maCouleurNoir); 
+	if (police == NULL) {
+		//Creation de l'erreur ?
+		  SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
+	}
+	
+    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, police);
+	if (textureTexteVie == NULL) {
+		//Creation de l'erreur ?
+		  SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte > %s\n", TTF_GetError());
+	}
+	
+    SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
+
+    positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
+    positionTexteVie.y = 0;
+	//FENETRE_HAUTEUR / 2 - positionTexteVie.h / 2;
 
     SDL_FreeSurface(police);
     TTF_CloseFont(font);
@@ -148,7 +172,9 @@ void jouer(SDL_Renderer* pRenderer) {
 		}
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
-        SDL_RenderCopy(pRenderer, texteVie, NULL, &position);
+		//mettre a jour puis afficher le texte 
+		
+        SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
 
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
@@ -184,7 +210,7 @@ void jouer(SDL_Renderer* pRenderer) {
 /*-------------------------------------------------------- Fin de la boucle principale d'une partie ------------------------------------------------------*/
 
 	SDL_DestroyTexture(pTextureFond);
-	SDL_DestroyTexture(texteVie);
+	SDL_DestroyTexture(textureTexteVie);
 	listeEnnemi = supprimerToutEn(&listeEnnemi);
 	listeTourelle = supprimerToutTour(&listeTourelle);
 	desallouerTab2D (tabCase, 15);

@@ -36,7 +36,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-    /*Créationdu Rendu*/
+    /*Création du Rendu*/
     pRenderer = SDL_CreateRenderer (pWindow, -1, SDL_RENDERER_ACCELERATED);
     if (pRenderer == NULL) {
         SDL_Log("ERREUR: Creation du Rendu > %s\n", SDL_GetError());
