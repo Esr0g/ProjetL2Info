@@ -105,7 +105,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	/* Initialisation de quelques données concernant la partie */
 	int killTotal = 0;
-	// int score = 0;
+	int score = 0;
 	// int argent = 400;
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
