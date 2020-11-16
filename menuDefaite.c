@@ -98,7 +98,7 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 
     while (menuContinuer) {
         SDL_Event eventMenuDefait;
-		SDL_Delay(15);
+		SDL_Delay(33);
 		
 		/* Color le fond en noir et noettoye le rendu */
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
@@ -196,7 +196,6 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 						menuContinuer = false;
 						*menu = SDL_FALSE;
                         *programLaunched = SDL_FALSE;
-						printf("Clic\n");
 					} else if (SDL_PointInRect(&positionClicSouri, &poisitionTexteMenu)) {
 						menuContinuer = false;
 						*menu = SDL_FALSE;

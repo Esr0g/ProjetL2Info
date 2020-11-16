@@ -542,7 +542,6 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
 				if ((tempsAuTick - getTourelle(lt, i)->tpsEntre2Tire) > getTourelle(lt, i)->vitesseAttaque) {
 					getEnnemi(le, j)->vie = getEnnemi(le, j)->vie - getTourelle(lt, i)->degats;
-					printf ("ennemi: %d, vie: %d\n", j, getEnnemi(le, j)->vie);
 					getTourelle(lt, i)->tpsEntre2Tire = SDL_GetTicks();
 				}
 				collision = true;
