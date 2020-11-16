@@ -68,5 +68,10 @@ Il est maintenant possible d'ajouter une tourelle avec un clic de la souris sur 
 Ajout des fonctions pour permet de savoir si il y'a une collison entre un ennemi ou une tourelle  
 source des algo : http://sdz.tdct.org/sdz/eorie-des-collisions.html  
 Les tourelles attaques maintenant en fonction de leur vitesse d'attaque  
-Ajout de la librairie SDL_ttf  (affichage de texte)
+Ajout de la librairie SDL_ttf  (affichage de texte)  
 
+### Semaine 5
+
+Ajout d'une page "défaite" lorsque la vie de la base atteint 0  
+Il est possible de quitter ou de retourner au menu à l'aide d'un clique de la souris sur le bon boutton  
+Lorsque l'on survole les bouttons avec la souri, ceux-ci se mettent en rouge  
