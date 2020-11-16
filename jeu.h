@@ -4,7 +4,7 @@
 # include "structures.h"
 
 /* Prototypes */
-void jouer(SDL_Renderer* pRenderer);
+void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched);
 void limiteFPS(unsigned int limite);
 Uint32 bougerEnnemis(Uint32 intervalle, void *parametre);
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li);

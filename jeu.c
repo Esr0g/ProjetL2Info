@@ -9,8 +9,9 @@
 #include "jeu.h"
 #include "structures.h"
 #include "constantes.h"
+#include "menuDefaite.h"
 
-void jouer(SDL_Renderer* pRenderer) {
+void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	SDL_bool partieContinuer = SDL_TRUE;
 
@@ -104,11 +105,11 @@ void jouer(SDL_Renderer* pRenderer) {
 
 	/* Initialisation de quelques données concernant la partie */
 	int killTotal = 0;
-	int score = 0;
-	int argent = 400;
+	// int score = 0;
+	// int argent = 400;
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
-	while (partieContinuer) {
+	while (partieContinuer && programLaunched) {
 		SDL_Event eventsJeu;
 		 
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
@@ -175,6 +176,11 @@ void jouer(SDL_Renderer* pRenderer) {
 		//mettre a jour puis afficher le texte 
 		
         SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
+
+		/* Lorsque les points de vie de la base atteignent 0, la partie est perdu */
+		if (base01.vie <= 0) {
+			menuDefaite(pRenderer, &partieContinuer, programLaunched);
+		}
 
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {

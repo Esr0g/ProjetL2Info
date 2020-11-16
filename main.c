@@ -84,7 +84,7 @@ int main(void)
             case SDL_KEYDOWN:
                 switch (events.key.keysym.sym) {
                     case SDLK_1:
-                        jouer(pRenderer);
+                        jouer(pRenderer, &programLaunched);
                         continue;
                     case SDLK_ESCAPE:
                         programLaunched = SDL_FALSE;
