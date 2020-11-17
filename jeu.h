@@ -6,9 +6,11 @@
 /* Prototypes */
 void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched);
 void limiteFPS(unsigned int limite);
-Uint32 bougerEnnemis(Uint32 intervalle, void *parametre);
+Uint32 bougerEnnemisDebut1(Uint32 intervalle, void *parametre);
+Uint32 bougerEnnemisDebut2(Uint32 intervalle, void *parametre);
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li);
-Uint32 creationEnnemi(Uint32 intervalle, void *parametre);
+Uint32 creationEnnemiDebut2(Uint32 intervalle, void *parametre);
+Uint32 creationEnnemiDebut1(Uint32 intervalle, void *parametre);
 
 Cases **allouerTab2D (int n, int m);
 void desallouerTab2D(Cases **tab, int n);
@@ -27,5 +29,7 @@ int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By);
 Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1);
 
 void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt);
+
+void choixDeLaManche (int manche, int *nbEnnemiDebut1, int *nbEnnemiDebut2);
 
 #endif

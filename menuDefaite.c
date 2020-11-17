@@ -53,7 +53,7 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 	
     SDL_QueryTexture(textureTextePerdu, NULL, NULL, &positionTextePerdu.w, &positionTextePerdu.h);
 
-    positionTextePerdu.x = 250;
+    positionTextePerdu.x = (FENETRE_LARGEUR / 2) - (positionTextePerdu.w / 2);
     positionTextePerdu.y = 100;
 
 	SDL_FreeSurface(police150);
@@ -75,7 +75,7 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 	SDL_FreeSurface(policeQuitterBlanche);
 
 	SDL_QueryTexture(textureTexteQuitter, NULL, NULL, &positionTexteQuitter.w, &positionTexteQuitter.h);
-    positionTexteQuitter.x = 410;
+    positionTexteQuitter.x = (FENETRE_LARGEUR / 2) - (positionTexteQuitter.w /2);
     positionTexteQuitter.y = 550;
 
 	/* Initialisation du Texte "Menu" */
@@ -84,7 +84,7 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 	SDL_FreeSurface(policeMenu);
 
 	SDL_QueryTexture(textureTexteMenu, NULL, NULL, &poisitionTexteMenu.w, &poisitionTexteMenu.h);
-    poisitionTexteMenu.x = 460;
+    poisitionTexteMenu.x = (FENETRE_LARGEUR / 2) - (poisitionTexteMenu.w / 2);
     poisitionTexteMenu.y = 350;
 
 	/*Poisition de la souris */
@@ -116,10 +116,6 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			textureTexteQuitter = SDL_CreateTextureFromSurface(pRenderer, policeQuitterBlanche);
 
 			SDL_FreeSurface(policeQuitterBlanche);
-
-			SDL_QueryTexture(textureTexteQuitter, NULL, NULL, &positionTexteQuitter.w, &positionTexteQuitter.h);
-			positionTexteQuitter.x = 410;
-			positionTexteQuitter.y = 550;
 			
 		} else if (coloreTexteQuitter == true && !SDL_PointInRect(&positionSouri, &positionTexteQuitter)) {
 			coloreTexteQuitter = false;
@@ -129,10 +125,6 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			textureTexteQuitter = SDL_CreateTextureFromSurface(pRenderer, policeQuitterBlanche);
 
 			SDL_FreeSurface(policeQuitterBlanche);
-
-			SDL_QueryTexture(textureTexteQuitter, NULL, NULL, &positionTexteQuitter.w, &positionTexteQuitter.h);
-			positionTexteQuitter.x = 410;
-			positionTexteQuitter.y = 550;
 		}
 
 		/*Permet de colorer en rouge le cadre du texte "Quitter" */
@@ -156,10 +148,6 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			textureTexteMenu = SDL_CreateTextureFromSurface(pRenderer, policeMenu);
 
 			SDL_FreeSurface(policeMenu);
-
-			SDL_QueryTexture(textureTexteMenu, NULL, NULL, &poisitionTexteMenu.w, &poisitionTexteMenu.h);
-			poisitionTexteMenu.x = 460;
-			poisitionTexteMenu.y = 350;
 			
 		} else if (coloreTexteMenu == true && !SDL_PointInRect(&positionSouri, &poisitionTexteMenu)) {
 			coloreTexteMenu = false;
@@ -169,10 +157,6 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			textureTexteMenu = SDL_CreateTextureFromSurface(pRenderer, policeMenu);
 
 			SDL_FreeSurface(policeMenu);
-
-			SDL_QueryTexture(textureTexteMenu, NULL, NULL, &poisitionTexteMenu.w, &poisitionTexteMenu.h);
-			poisitionTexteMenu.x = 460;
-			poisitionTexteMenu.y = 350;
 		}
 
 		/*Permet de colorer en rouge le cadre du texte "Menu" */

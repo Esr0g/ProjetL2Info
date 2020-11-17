@@ -37,8 +37,10 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	Base base01; base01.base.h = 64; base01.base.w = 128 ; base01.base.x = 448; base01.base.y = 896; base01.vie = 3;
 	
 	
-	ListeEnnemi *listeEnnemi = NULL; // initialisation de la liste d'ennemis
-	int nbEnnemi = 5; // nombre d'ennmis choisi
+	ListeEnnemi *listeEnnemi1 = NULL; // initialisation de la liste d'ennemis
+	ListeEnnemi *listeEnnemi2 = NULL;
+	int nbEnnemiDebut1 = 0; // nombre d'ennmis choisi
+	int nbEnnemiDebut2 = 0;
 
 	ListeTourelle *listeTourelle = NULL; // initialisation de la liste de tourelle
 
@@ -48,12 +50,15 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	int colone;
 
 	/* Permet de faire un timer pour le spawn des énnemis */
-	SDL_TimerID initialisationListeEnnemi;
-	Bool initialisationListeEnnemiBool = false;
+	SDL_TimerID initialisationListeEnnemiDebut1;
+	Bool initialisationListeEnnemiDebut1Bool = false;
+	SDL_TimerID initialisationListeEnnemiDebut2;
 	
 	/* Permet de faire un timer pour le déplacement des énnemis */
-	SDL_TimerID mouvementEnnemi;
-	Bool mouvementEnnemiBool = false;
+	SDL_TimerID mouvementEnnemi1;
+	SDL_TimerID mouvementEnnemi2;
+	Bool mouvementEnnemi1Bool = false;
+	Bool mouvementEnnemi2Bool = false;
 
 	/* Pour la limite des FPS */
 	unsigned int limite = 0;
@@ -105,8 +110,12 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	/* Initialisation de quelques données concernant la partie */
 	int killTotal = 0;
-	int score = 0;
+	// int score = 0;
 	// int argent = 400;
+
+	/* Permet de savoir à quelle manche se trouve le jeu et si la partie manche est en cours */
+	int manche = 1;
+	Bool mancheEnCours = false;
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
 	while (partieContinuer && programLaunched) {
@@ -114,33 +123,78 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		 
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
 
-		/* Active le timer de spawn si il n'est pas activé*/
-		if (!initialisationListeEnnemiBool) {
-			initialisationListeEnnemi = SDL_AddTimer((VITESSE_DEPLACEMENT_ENNEMI * (TAILLE_ENNEMI + 20)), creationEnnemi, &listeEnnemi);
-			initialisationListeEnnemiBool = true;
+		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && killTotal != 0 && manche != 1) {
+			manche++;
+			mancheEnCours = false;
+			initialisationListeEnnemiDebut1Bool = false;
+			initialisationListeEnnemiDebut1Bool = false;
 		}
 
-		/* Désactive le timer de spaxn lorsque le nombre d'énnemis est atteint */
-		if (listeTailleEn(listeEnnemi) == nbEnnemi) {
-			SDL_RemoveTimer(initialisationListeEnnemi);
+		/* Définit le nombre d'ennemis en fonction de la manche */
+		if (!mancheEnCours) {
+			choixDeLaManche(manche, &nbEnnemiDebut1, &nbEnnemiDebut2);
 		}
 
-		/* Active le timer de déplcaement uniquement lorsque il y a des énnemis */
-		if ((listeTailleEn(listeEnnemi) > 0) && (!mouvementEnnemiBool)) {
-			mouvementEnnemi = SDL_AddTimer(VITESSE_DEPLACEMENT_ENNEMI, bougerEnnemis, &listeEnnemi);
-			mouvementEnnemiBool = true;
-		} else if (listeTailleEn(listeEnnemi) == 0 && mouvementEnnemiBool) {
-			SDL_RemoveTimer(mouvementEnnemi);
+		/* Active le timer de spawn des ennemis qui viennet de la gauche et du haut si il n'est pas activé*/
+		if (!initialisationListeEnnemiDebut1Bool && !mancheEnCours) {
+			initialisationListeEnnemiDebut1 = SDL_AddTimer((VITESSE_DEPLACEMENT_ENNEMI * (TAILLE_ENNEMI + 20)), creationEnnemiDebut1, &listeEnnemi1);
+			initialisationListeEnnemiDebut1Bool = true;
+
+			if (nbEnnemiDebut2 != 0) {
+				initialisationListeEnnemiDebut2 = SDL_AddTimer ((VITESSE_DEPLACEMENT_ENNEMI * (TAILLE_ENNEMI + 20)), creationEnnemiDebut2, &listeEnnemi2);
+			}
+			mancheEnCours = true;
 		}
 
-		/** Supprime un ennemi lorsqu'il rentre en collision avec la base ou lorsque ses point de vie atteigent 0*/
-		if (!listeEstVideEnnemi(listeEnnemi)) {
-			for (int i = 0; i < listeTailleEn(listeEnnemi); i++) {
-				if (SDL_HasIntersection(&getEnnemi(listeEnnemi, i)->forme, &base01.base)) {
-					supprimerEnnemi(&listeEnnemi, i);
+		/* Désactive le timer de spawn des ennemis qui viennet de la gauche lorsque le nombre d'ennemis est atteint */
+		if (listeTailleEn(listeEnnemi1) == nbEnnemiDebut1) {
+			SDL_RemoveTimer(initialisationListeEnnemiDebut1);
+		}
+
+		/* Désactive le timer de spawn des ennemis qui viennent du haut lorsque le nombre d'énnemis est atteint */
+		if (listeTailleEn(listeEnnemi2) == nbEnnemiDebut2) {
+			SDL_RemoveTimer(initialisationListeEnnemiDebut2);
+		}
+
+		/* Active le timer de déplcaement uniquement lorsque il y a des ennemis (pour les ennemis qui viennent de la gauche) */
+		if ((listeTailleEn(listeEnnemi1) > 0) && (!mouvementEnnemi1Bool)) {
+			mouvementEnnemi1 = SDL_AddTimer(VITESSE_DEPLACEMENT_ENNEMI, bougerEnnemisDebut1, &listeEnnemi1);
+			mouvementEnnemi1Bool = true;
+		} else if (listeTailleEn(listeEnnemi1) == 0 && mouvementEnnemi1Bool) {
+			SDL_RemoveTimer(mouvementEnnemi1);
+			mouvementEnnemi1Bool = false;
+		}
+
+		/* Active le timer de déplcaement uniquement lorsque il y a des ennemis (pour les ennemis qui viennent du haut) */
+		if ((listeTailleEn(listeEnnemi2) > 0) && (!mouvementEnnemi2Bool)) {
+			mouvementEnnemi2 = SDL_AddTimer(VITESSE_DEPLACEMENT_ENNEMI, bougerEnnemisDebut2, &listeEnnemi2);
+			mouvementEnnemi2Bool = true;
+		} else if (listeTailleEn(listeEnnemi2) == 0 && mouvementEnnemi2Bool) {
+			SDL_RemoveTimer(mouvementEnnemi2);
+			mouvementEnnemi2Bool = false;
+		}
+
+		/** Supprime un ennemi de la liste 1 lorsqu'il rentre en collision avec la base ou lorsque ses point de vie atteigent 0*/
+		if (!listeEstVideEnnemi(listeEnnemi1)) {
+			for (int i = 0; i < listeTailleEn(listeEnnemi1); i++) {
+				if (SDL_HasIntersection(&getEnnemi(listeEnnemi1, i)->forme, &base01.base)) {
+					supprimerEnnemi(&listeEnnemi1, i);
 					base01.vie--;
-				} else if (getEnnemi(listeEnnemi, i)->vie <= 0) {
-					supprimerEnnemi(&listeEnnemi, i);
+				} else if (getEnnemi(listeEnnemi1, i)->vie <= 0) {
+					supprimerEnnemi(&listeEnnemi1, i);
+					killTotal++;
+				}
+			}
+		}
+
+		/** Supprime un ennemi de la liste 2 lorsqu'il rentre en collision avec la base ou lorsque ses point de vie atteigent 0*/
+		if (!listeEstVideEnnemi(listeEnnemi2)) {
+			for (int i = 0; i < listeTailleEn(listeEnnemi2); i++) {
+				if (SDL_HasIntersection(&getEnnemi(listeEnnemi2, i)->forme, &base01.base)) {
+					supprimerEnnemi(&listeEnnemi2, i);
+					base01.vie--;
+				} else if (getEnnemi(listeEnnemi2, i)->vie <= 0) {
+					supprimerEnnemi(&listeEnnemi2, i);
 					killTotal++;
 				}
 			}
@@ -156,10 +210,14 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 								149, 126, 118, 100);
 		}
 
-		/* Color les énnemis lorsqu'il y'en a */
-		limiteFPS(limite);
-		if (!listeEstVideEnnemi(listeEnnemi)) {
-			colorationEnnemi(pRenderer, listeEnnemi);
+		/* Color les énnemis de la liste 1 lorsqu'il y'en a */
+		if (!listeEstVideEnnemi(listeEnnemi1)) {
+			colorationEnnemi(pRenderer, listeEnnemi1);
+		}
+
+		/* Color les énnemis de la liste 2 lorsqu'il y'en a */
+		if (!listeEstVideEnnemi(listeEnnemi2)) {
+			colorationEnnemi(pRenderer, listeEnnemi2);
 		}
 
 		/* Color les tourelles lorsqu'il y'en a */
@@ -168,14 +226,19 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		/* Attaque des ennemis par les tourelles */
-		if (!listeEstVideEnnemi(listeEnnemi) && !listeEstVideTourelle(listeTourelle)) {
-			attaqueEnnemi (listeEnnemi, listeTourelle);
+		if (!listeEstVideEnnemi(listeEnnemi1) && !listeEstVideTourelle(listeTourelle)) {
+			attaqueEnnemi (listeEnnemi1, listeTourelle);
+		}
+		if (!listeEstVideEnnemi(listeEnnemi2) && !listeEstVideTourelle(listeTourelle)) {
+			attaqueEnnemi (listeEnnemi2, listeTourelle);
 		}
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 		//mettre a jour puis afficher le texte 
 		
         SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
+
+		limiteFPS(limite);
 
 		/* Lorsque les points de vie de la base atteignent 0, la partie est perdu */
 		if (base01.vie <= 0) {
@@ -217,11 +280,14 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	SDL_DestroyTexture(pTextureFond);
 	SDL_DestroyTexture(textureTexteVie);
-	listeEnnemi = supprimerToutEn(&listeEnnemi);
+	listeEnnemi1 = supprimerToutEn(&listeEnnemi1);
+	listeEnnemi2 = supprimerToutEn(&listeEnnemi2);
 	listeTourelle = supprimerToutTour(&listeTourelle);
 	desallouerTab2D (tabCase, 15);
-	SDL_RemoveTimer(initialisationListeEnnemi);
-	SDL_RemoveTimer(mouvementEnnemi);
+	SDL_RemoveTimer(initialisationListeEnnemiDebut1);
+	SDL_RemoveTimer(initialisationListeEnnemiDebut2);
+	SDL_RemoveTimer(mouvementEnnemi1);
+	SDL_RemoveTimer(mouvementEnnemi2);
 }
 
 /*------------------------------------------------------------------------------------*/
@@ -246,7 +312,7 @@ void limiteFPS(unsigned int limite) {
  * Fonction de callback pour le timer qui permet de bouger les énnemis qui viennent
  * de la gauche
  */
-Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
+Uint32 bougerEnnemisDebut1(Uint32 intervalle, void *parametre) {
 	ListeEnnemi **li = parametre;
 	Ennemi *e = NULL;
 	for (int i = 0; i < listeTailleEn(*li); i++) {
@@ -258,6 +324,40 @@ Uint32 bougerEnnemis(Uint32 intervalle, void *parametre) {
 			e->forme.y++;
 		} else if (e->forme.x < 524 && e->forme.y == 588) {
 			e->forme.x++;
+		} else if (e->forme.x == 524) {
+			e->forme.y++;
+		}
+	}
+
+	return intervalle;
+}
+
+/**
+ * Fonction de callback pour le timer qui permet de bouger les énnemis qui viennent
+ * du haut
+ */
+Uint32 bougerEnnemisDebut2(Uint32 intervalle, void *parametre) {
+	ListeEnnemi **li = parametre;
+	Ennemi *e = NULL;
+	for (int i = 0; i < listeTailleEn(*li); i++) {
+		e = getEnnemi(*li, i);
+
+		if (e->forme.x == 652 && e->forme.y < 268) {
+			e->forme.y++;
+		} else if (e->forme.x < 972 && e->forme.y == 268) {
+			e->forme.x++;
+		} else if (e->forme.x == 972 && e->forme.y < 780) {
+			e->forme.y++;
+		} else if (e->forme.x > 780 && e->forme.y == 780) {
+			e->forme.x--;
+		} else if (e->forme.x == 780 && e->forme.y > 460) {
+			e->forme.y--;
+		} else if (e->forme.x > 588 && e->forme.y == 460) {
+			e->forme.x--;
+		} else if (e->forme.x == 588 && e->forme.y < 588) {
+			e->forme.y++;
+		} else if (e->forme.x > 524 && e->forme.y == 588) {
+			e->forme.x--;
 		} else if (e->forme.x == 524) {
 			e->forme.y++;
 		}
@@ -285,11 +385,19 @@ void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
  * qui arrivent par la gauche les après les autres et de définir 
  * leur position de départ
  */
-Uint32 creationEnnemi(Uint32 intervalle, void *parametre) {
+Uint32 creationEnnemiDebut1(Uint32 intervalle, void *parametre) {
 	ListeEnnemi **li = parametre;
 
 	ajouterEnnemi(&(*li));
 	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, -TAILLE_ENNEMI, Y_DEPART_ENNEMI_1 + ((64 - TAILLE_ENNEMI)/2) , TAILLE_ENNEMI, TAILLE_ENNEMI);
+	return intervalle;
+}
+
+Uint32 creationEnnemiDebut2(Uint32 intervalle, void *parametre) {
+	ListeEnnemi **li = parametre;
+
+	ajouterEnnemi(&(*li));
+	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, X_DEPART_ENNEMI_2 + ((64 - TAILLE_ENNEMI)/2), -TAILLE_ENNEMI , TAILLE_ENNEMI, TAILLE_ENNEMI);
 	return intervalle;
 }
 
@@ -500,10 +608,10 @@ Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
     	return false;
    }
 
-   if (collisionPointCercle(box1.x,box1.y,C1)==1
-    || collisionPointCercle(box1.x,box1.y+box1.h,C1)==1
-    || collisionPointCercle(box1.x+box1.w,box1.y,C1)==1
-    || collisionPointCercle(box1.x+box1.w,box1.y+box1.h,C1)==1) {
+   if (collisionPointCercle(box1.x,box1.y,C1)
+    || collisionPointCercle(box1.x,box1.y+box1.h,C1)
+    || collisionPointCercle(box1.x+box1.w,box1.y,C1)
+    || collisionPointCercle(box1.x+box1.w,box1.y+box1.h,C1)) {
 
     	return true;
 	}
@@ -541,7 +649,7 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 
 			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
 				if ((tempsAuTick - getTourelle(lt, i)->tpsEntre2Tire) > getTourelle(lt, i)->vitesseAttaque) {
-					getEnnemi(le, j)->vie = getEnnemi(le, j)->vie - getTourelle(lt, i)->degats;
+					getEnnemi(le, j)->vie -= getTourelle(lt, i)->degats;
 					getTourelle(lt, i)->tpsEntre2Tire = SDL_GetTicks();
 				}
 				collision = true;
@@ -550,4 +658,36 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 			}
 		}	
 	}
+}
+
+/** Permet de définir le nombre d'ennemis qui viennent de la gauche et du haut
+ * en fonction de la manche: definit dans indicationsManche.txt
+ */
+void choixDeLaManche (int manche, int *nbEnnemiDebut1, int *nbEnnemiDebut2) {
+	FILE *indicationsManche = fopen ("fichiersTexte/indicationsManche.txt", "r");
+	char caractere =  0;
+	char tabInt[3] = {0, 0, 0};
+
+	for (int i = 1; i < manche; i++) {
+
+		while (caractere != '\n' && caractere != EOF) {
+			caractere = fgetc (indicationsManche);
+		}
+	}
+
+	for (int i = 0; i < 3; i++) {
+		tabInt[i] = fgetc(indicationsManche);
+	}
+
+	*nbEnnemiDebut1 = (tabInt[0] - '0') * 100 + (tabInt[1] - '0') * 10 + (tabInt[2] - '0');
+
+	caractere = fgetc (indicationsManche);
+
+	for (int i = 0; i < 3; i++) {
+		tabInt[i] = fgetc(indicationsManche);
+	}
+
+	*nbEnnemiDebut2 = (tabInt[0] - '0') * 100 + (tabInt[1] - '0') * 10 + (tabInt[2] - '0');
+
+	fclose (indicationsManche);
 }

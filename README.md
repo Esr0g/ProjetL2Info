@@ -40,20 +40,20 @@ make
 ## Suivi
 
 
-### Semaine 1
+### Semaine -1
 
 Implémentation de la SDL pour afficher uniquement le fond  
 Création de la boucle principale dans main.c avec le code de bases pour quitter.  
 Ajout d'une fonction jeu dans jeu.c avec son header. Boucle principale d'une partie  
 Ajout d'un menu dans main avec choix pour jouer.
 
-### Semaine 2
+### Semaine 0
 
 Ajout d'un fichier constantes.h avec les constantes du jeu  
 Ajout d'un fichier structure.c et structure.h avec les définitions des ennemis, des tourelles et des listes ainsi que toutes les fonctions associées  
 Affichage des ennemis avec ajout à une liste les uns après les autres. Ils se déplacent à une vitesse constante à l'aide d'un timer et disparraissent (de la liste et de l'écran) lorsqu'ils rentrent en collision avec la base.  
 
-### Semaine 3
+### Semaine 1
 
 Ajout des fonctions pour gérer la liste de tourelle  
 Ajout de la librairie SDL2_gfx qui permet de gérer l'affichage de cercle  
@@ -63,15 +63,18 @@ Ajout d'une structure case qui représentent le terrain de jeu: un case est déf
 La map est maintenant représentée par un tableau de case (Ajout des fonction pour allouer la mémoire au tableau à double entrée et pour libérer la mémoire)  
 Il est maintenant possible d'ajouter une tourelle avec un clic de la souris sur les cases de la map (impossible d'en mettre plusieurs sur une même case, impossible de poser une tourelle sur le chemin des ennemis ou sur la base)  
 
-### Semaine 4
+### Semaine 2
 
 Ajout des fonctions pour permet de savoir si il y'a une collison entre un ennemi ou une tourelle  
 source des algo : http://sdz.tdct.org/sdz/eorie-des-collisions.html  
 Les tourelles attaques maintenant en fonction de leur vitesse d'attaque  
 Ajout de la librairie SDL_ttf  (affichage de texte)  
 
-### Semaine 5
+### Semaine 3
 
 Ajout d'une page "défaite" lorsque la vie de la base atteint 0  
 Il est possible de quitter ou de retourner au menu à l'aide d'un clique de la souris sur le bon boutton  
 Lorsque l'on survole les bouttons avec la souri, ceux-ci se mettent en rouge  
+On peut maintenant choisir plusieurs manche (pas encore ajouter à l'une à la suite des autre: il faut choisir manuellement dans le code)  
+Le nombre d'ennemis qui commencent par le haut ou par la gauche est écrit dans un fichier texte  
+Problème rencontré: les attaques des tourelles sur les ennemis sont plutot hasardeuse et on n'arrive pas à trouver le problème..  
