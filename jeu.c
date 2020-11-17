@@ -123,13 +123,6 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		 
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
 
-		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && killTotal != 0 && manche != 1) {
-			manche++;
-			mancheEnCours = false;
-			initialisationListeEnnemiDebut1Bool = false;
-			initialisationListeEnnemiDebut1Bool = false;
-		}
-
 		/* Définit le nombre d'ennemis en fonction de la manche */
 		if (!mancheEnCours) {
 			choixDeLaManche(manche, &nbEnnemiDebut1, &nbEnnemiDebut2);
@@ -155,6 +148,16 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		if (listeTailleEn(listeEnnemi2) == nbEnnemiDebut2) {
 			SDL_RemoveTimer(initialisationListeEnnemiDebut2);
 		}
+
+		/** 
+		 * Permet de savoir si la manche est terminé mais ne fonctione pas encore 
+		 * 
+		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && listeTailleTour(listeTourelle) > 0) {
+			manche++;
+			mancheEnCours = false;
+			initialisationListeEnnemiDebut1Bool = false;
+			initialisationListeEnnemiDebut1Bool = false;
+		} */
 
 		/* Active le timer de déplcaement uniquement lorsque il y a des ennemis (pour les ennemis qui viennent de la gauche) */
 		if ((listeTailleEn(listeEnnemi1) > 0) && (!mouvementEnnemi1Bool)) {
