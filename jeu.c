@@ -52,7 +52,10 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	/* Permet de faire un timer pour le spawn des énnemis */
 	SDL_TimerID initialisationListeEnnemiDebut1;
 	Bool initialisationListeEnnemiDebut1Bool = false;
+	Bool timerPopEnnemi1Remove = false;
 	SDL_TimerID initialisationListeEnnemiDebut2;
+	Bool initialisationListeEnnemiDebut2Bool = false;
+	Bool timerPopEnnemi2Remove = false;
 	
 	/* Permet de faire un timer pour le déplacement des énnemis */
 	SDL_TimerID mouvementEnnemi1;
@@ -110,12 +113,14 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	/* Initialisation de quelques données concernant la partie */
 	int killTotal = 0;
-	// int score = 0;
-	// int argent = 400;
+	int score = 0;
+	int argent = 500;
 
 	/* Permet de savoir à quelle manche se trouve le jeu et si la partie manche est en cours */
 	int manche = 1;
 	Bool mancheEnCours = false;
+
+	int tempsEcouleDepuisDebutManche;
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
 	while (partieContinuer && programLaunched) {
@@ -126,6 +131,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		/* Définit le nombre d'ennemis en fonction de la manche */
 		if (!mancheEnCours) {
 			choixDeLaManche(manche, &nbEnnemiDebut1, &nbEnnemiDebut2);
+			tempsEcouleDepuisDebutManche = SDL_GetTicks();
 		}
 
 		/* Active le timer de spawn des ennemis qui viennet de la gauche et du haut si il n'est pas activé*/
@@ -135,29 +141,37 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 			if (nbEnnemiDebut2 != 0) {
 				initialisationListeEnnemiDebut2 = SDL_AddTimer ((VITESSE_DEPLACEMENT_ENNEMI * (TAILLE_ENNEMI + 20)), creationEnnemiDebut2, &listeEnnemi2);
+				initialisationListeEnnemiDebut2Bool = true;
 			}
 			mancheEnCours = true;
 		}
 
 		/* Désactive le timer de spawn des ennemis qui viennet de la gauche lorsque le nombre d'ennemis est atteint */
-		if (listeTailleEn(listeEnnemi1) == nbEnnemiDebut1) {
+		if (listeTailleEn(listeEnnemi1) == nbEnnemiDebut1 && initialisationListeEnnemiDebut1Bool && !timerPopEnnemi1Remove) {
 			SDL_RemoveTimer(initialisationListeEnnemiDebut1);
+			timerPopEnnemi1Remove = true;
 		}
 
 		/* Désactive le timer de spawn des ennemis qui viennent du haut lorsque le nombre d'énnemis est atteint */
-		if (listeTailleEn(listeEnnemi2) == nbEnnemiDebut2) {
+		if (listeTailleEn(listeEnnemi2) == nbEnnemiDebut2 && initialisationListeEnnemiDebut2Bool && !timerPopEnnemi2Remove) {
 			SDL_RemoveTimer(initialisationListeEnnemiDebut2);
+			timerPopEnnemi2Remove = true;
 		}
 
 		/** 
-		 * Permet de savoir si la manche est terminé mais ne fonctione pas encore 
-		 * 
-		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && listeTailleTour(listeTourelle) > 0) {
+		 * Lance une nouvelle manche si la manche précédente est terminéee
+		 */
+		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && (SDL_GetTicks() - tempsEcouleDepuisDebutManche >= 10000)) {
 			manche++;
 			mancheEnCours = false;
 			initialisationListeEnnemiDebut1Bool = false;
-			initialisationListeEnnemiDebut1Bool = false;
-		} */
+			initialisationListeEnnemiDebut2Bool = false;
+			timerPopEnnemi1Remove = false;
+			timerPopEnnemi2Remove = false;
+			listeEnnemi1 = NULL;
+			listeEnnemi2 = NULL;
+			score += 150;
+		}
 
 		/* Active le timer de déplcaement uniquement lorsque il y a des ennemis (pour les ennemis qui viennent de la gauche) */
 		if ((listeTailleEn(listeEnnemi1) > 0) && (!mouvementEnnemi1Bool)) {
@@ -184,8 +198,10 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 					supprimerEnnemi(&listeEnnemi1, i);
 					base01.vie--;
 				} else if (getEnnemi(listeEnnemi1, i)->vie <= 0) {
+					score += getEnnemi(listeEnnemi1, i)->pointsLorsqueTue;
 					supprimerEnnemi(&listeEnnemi1, i);
 					killTotal++;
+					argent += 20;
 				}
 			}
 		}
@@ -197,8 +213,10 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 					supprimerEnnemi(&listeEnnemi2, i);
 					base01.vie--;
 				} else if (getEnnemi(listeEnnemi2, i)->vie <= 0) {
+					score += getEnnemi(listeEnnemi2, i)->pointsLorsqueTue;
 					supprimerEnnemi(&listeEnnemi2, i);
 					killTotal++;
+					argent +=20;
 				}
 			}
 		}
@@ -263,8 +281,9 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 					positionClicSouris.x = eventsJeu.button.x;
 					positionClicSouris.y = eventsJeu.button.y;
 					ligne = 15; colone = 18;
-					if (possibilitePositionnerTourelle(&positionClicSouris, tabCase, &ligne, &colone)) {
+					if (possibilitePositionnerTourelle(&positionClicSouris, tabCase, &ligne, &colone) && argent >= 200) {
 						ajouterTourelleEtPositionnement (&listeTourelle, tabCase, ligne, colone);
+						argent -= 200;
 					}
 					break;
 				case SDL_MOUSEMOTION:
@@ -393,6 +412,7 @@ Uint32 creationEnnemiDebut1(Uint32 intervalle, void *parametre) {
 
 	ajouterEnnemi(&(*li));
 	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, -TAILLE_ENNEMI, Y_DEPART_ENNEMI_1 + ((64 - TAILLE_ENNEMI)/2) , TAILLE_ENNEMI, TAILLE_ENNEMI);
+	(*li)->en.pointsLorsqueTue = 50;
 	return intervalle;
 }
 
@@ -401,6 +421,7 @@ Uint32 creationEnnemiDebut2(Uint32 intervalle, void *parametre) {
 
 	ajouterEnnemi(&(*li));
 	definirEnnemiListe(*li, 0, VIE_ENNEMI_1, X_DEPART_ENNEMI_2 + ((64 - TAILLE_ENNEMI)/2), -TAILLE_ENNEMI , TAILLE_ENNEMI, TAILLE_ENNEMI);
+	(*li)->en.pointsLorsqueTue = 50;
 	return intervalle;
 }
 
@@ -509,6 +530,7 @@ void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, in
 	(*li)->tourelle.degats = 30;
 	(*li)->tourelle.vitesseAttaque = VITESSE_D_ATTAQUE_TOURELLE_DEPART;
 	(*li)->tourelle.tpsEntre2Tire = SDL_GetTicks();
+	(*li)->tourelle.cout = 200;
 	
 	tab[n][m].occupationEmplacement = true;
 
@@ -670,13 +692,15 @@ void choixDeLaManche (int manche, int *nbEnnemiDebut1, int *nbEnnemiDebut2) {
 	FILE *indicationsManche = fopen ("fichiersTexte/indicationsManche.txt", "r");
 	char caractere =  0;
 	char tabInt[3] = {0, 0, 0};
+	int nbRetour = 1;
 
-	for (int i = 1; i < manche; i++) {
-
-		while (caractere != '\n' && caractere != EOF) {
-			caractere = fgetc (indicationsManche);
+	while (nbRetour < manche) {
+		caractere = fgetc(indicationsManche);
+		if (caractere ==  '\n') {
+			nbRetour++;
 		}
 	}
+
 
 	for (int i = 0; i < 3; i++) {
 		tabInt[i] = fgetc(indicationsManche);

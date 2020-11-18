@@ -78,3 +78,6 @@ Lorsque l'on survole les bouttons avec la souri, ceux-ci se mettent en rouge
 On peut maintenant choisir plusieurs manche (pas encore ajouter à l'une à la suite des autre: il faut choisir manuellement dans le code)  
 Le nombre d'ennemis qui commencent par le haut ou par la gauche est écrit dans un fichier texte  
 Problème rencontré: les attaques des tourelles sur les ennemis sont plutot hasardeuse et on n'arrive pas à trouver le problème..  
+Les manches s'enchainent maintenant automatiquement (elles sont gérée dans un fichier texte, on peut changer facilement le nombre d'ennemis et on peut rajouter des manches facilement, pour l'instant il y'en a 20)  
+Il y'a maintenant le début d'un sytème de gestion d'argent (on ne peut pas poser une tourelle lorsque l'on a pas assez d'argent)  
+Il y'a aussi le début de géstion du score (+50 à chaque tourelle tuée, +150 à chaque fin de manche)  

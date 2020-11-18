@@ -9,6 +9,7 @@ typedef enum {
 
 /* Définition d'un ennemi */
 typedef struct Ennemi {
+    int pointsLorsqueTue;
     int vie;
     SDL_Rect forme;
 }Ennemi;
@@ -35,7 +36,7 @@ typedef struct Cercle {
 
 /*Définition d'une tourelle */
 typedef struct Tourelle {
-    int vie;
+    int cout;
     int degats;
     int vitesseAttaque;
     int type;
