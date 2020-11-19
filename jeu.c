@@ -87,67 +87,181 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	int tempsEcouleDepuisDebutManche;
 
 
-	
-
-	    /* ----------------------------------------------------------- Initialisation du texte Vie Argent Tués---------------------------------------------*/
+	    /* ----------------------------------------------------------- Initialisation du texte Vie Argent KillTotal Score---------------------------------------------*/
 	
 	SDL_Rect positionTexteVie; //Définit la position du texte 
-	SDL_Rect positionTexteArgent;
+	SDL_Rect positionTexteManche;
+	SDL_Rect positionTexteScore;
 	SDL_Rect positionTexteKillTotal;
+	SDL_Rect positionTexteArgent;
 
- /*Vie*/
-    SDL_Color maCouleurNoir = {0, 0, 0, 255};
-	char strTexteVie[10]   =   "Vie : " ;
-	char strNbVie[10];
-	int verifVie = base01.vie;
-	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
-	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
-	 /*Fin Vie*/
-	
-	 /*Argent*/
-	char strTexteArgent[20]   =   "Argent : " ;
-	char strNbArgent[10];
-	int verifArgent = argent ;
-	 /*Fin Argent*/
 	
 
+	
+	
 	TTF_Font* police25 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);//Déclaration de la police
 	if (police25 == NULL) {
 		SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
 		partieContinuer = SDL_FALSE;
 	}
+
+
+	/*Vie*/
+	SDL_Color maCouleurNoir = {0, 0, 0, 255};
+	char strTexteVie[20]   =   "Vie : " ;
+	char strNbVie[10];
+	int verifVie = base01.vie;
+	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
+	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
 	
-    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); //Surface Texte Vie
 	if (surfaceTexteVie == NULL) {
-		SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
+		SDL_Log("ERREUR: Creation de la surface du texte Vie> %s\n", TTF_GetError());
 		  
 		TTF_CloseFont(police25);//Ferme la police 
 		partieContinuer = SDL_FALSE;
 	}
-
-    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
+	
+    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);//Texture Texte Vie
 	if (textureTexteVie == NULL) {
-		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte > %s\n", TTF_GetError());
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Vie > %s\n", TTF_GetError());
 		  
 		SDL_FreeSurface(surfaceTexteVie);
-		//TTF_CloseFont(police25);//Ferme la police 
+		TTF_CloseFont(police25);//Ferme la police 
 		partieContinuer = SDL_FALSE;
 	}
-
-
 	SDL_FreeSurface(surfaceTexteVie);
-
 	
     SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
-		positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
-		positionTexteVie.y = 0;
-	//FENETRE_HAUTEUR / 2 - positionTexteVie.h / 2;
+	positionTexteVie.x = 10; //en haut à gauche
+	positionTexteVie.y = 0;
+	/*Fin Vie*/
+	
+	/*Score*/
+	char strTexteScore[20]   =   "Score : " ;
+	char strNbScore[10];
+	int verifScore = score;
+	sprintf(strNbScore, "%d", score); //convertit la Score de la base (int) en char[] 
+	strcat(strTexteScore,strNbScore); //concaténe les 2 chaines de caractères 
+	
+    SDL_Surface *surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir); //Surface Texte Score
+	if (surfaceTexteScore == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte Score> %s\n", TTF_GetError());
+		  
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	
+    SDL_Texture *textureTexteScore = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteScore);//Texture Texte Score
+	if (textureTexteScore == NULL) {
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Score > %s\n", TTF_GetError());
+		  
+		SDL_FreeSurface(surfaceTexteScore);
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	SDL_FreeSurface(surfaceTexteScore);
+	
+    SDL_QueryTexture(textureTexteScore, NULL, NULL, &positionTexteScore.w, &positionTexteScore.h);
+	positionTexteScore.x = FENETRE_LARGEUR-250;//en haut à droite 
+	positionTexteScore.y =0;
+	/*Fin Score*/
+	
+	/*Manche*/
+	char strTexteManche[20]   =   "Manche : " ;
+	char strNbManche[10];
+	int verifManche = manche;
+	sprintf(strNbManche, "%d", manche); //convertit la Manche de la base (int) en char[] 
+	strcat(strTexteManche,strNbManche); //concaténe les 2 chaines de caractères 
+	
+    SDL_Surface *surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir); //Surface Texte Manche
+	if (surfaceTexteManche == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte Manche> %s\n", TTF_GetError());
+		  
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	
+    SDL_Texture *textureTexteManche = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteManche);//Texture Texte Manche
+	if (textureTexteManche == NULL) {
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Manche > %s\n", TTF_GetError());
+		  
+		SDL_FreeSurface(surfaceTexteManche);
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	SDL_FreeSurface(surfaceTexteManche);
+	
+    SDL_QueryTexture(textureTexteManche, NULL, NULL, &positionTexteManche.w, &positionTexteManche.h);
+	positionTexteManche.x = 0;//en haut à gauche 
+	positionTexteManche.y =positionTexteVie.h + 10;
+	/*Fin Manche*/
+	
+	/*KillTotal*/
+	char strTexteKillTotal[20]   =   "KillTotal : " ;
+	char strNbKillTotal[10];
+	int verifKillTotal = killTotal;
+	sprintf(strNbKillTotal, "%d", killTotal); //convertit la KillTotal de la base (int) en char[] 
+	strcat(strTexteKillTotal,strNbKillTotal); //concaténe les 2 chaines de caractères 
+	
+    SDL_Surface *surfaceTexteKillTotal = TTF_RenderText_Blended(police25, strTexteKillTotal, maCouleurNoir); //Surface Texte KillTotal
+	if (surfaceTexteKillTotal == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte KillTotal> %s\n", TTF_GetError());
+		  
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	
+    SDL_Texture *textureTexteKillTotal = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteKillTotal);//Texture Texte KillTotal
+	if (textureTexteKillTotal == NULL) {
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte KillTotal > %s\n", TTF_GetError());
+		  
+		SDL_FreeSurface(surfaceTexteKillTotal);
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	SDL_FreeSurface(surfaceTexteKillTotal);
+	
+    SDL_QueryTexture(textureTexteKillTotal, NULL, NULL, &positionTexteKillTotal.w, &positionTexteKillTotal.h);
+	positionTexteKillTotal.x = FENETRE_LARGEUR-250;
+	positionTexteKillTotal.y =positionTexteScore.h+10;// prend la position du score  pour afficher le nb de KillTotal en dessous 
+	/*Fin KillTotal*/
+	
+	/*Argent*/
+	char strTexteArgent[20]   =   "Argent : " ;
+	char strNbArgent[10];
+	int verifArgent = argent ;
+	sprintf(strNbArgent, "%d", argent); //convertit la vie de la base (int) en char[] 
+	strcat(strTexteArgent,strNbArgent); //concaténe les 2 chaines de caractères 
+
+	SDL_Surface *surfaceTexteArgent = TTF_RenderText_Blended(police25, strTexteArgent, maCouleurNoir); //Surface Texte Argent
+	if (surfaceTexteArgent == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte argent  > %s\n", TTF_GetError());
+		  
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	
+	SDL_Texture *textureTexteArgent = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteArgent);//Texture Texte Argent
+	if (textureTexteArgent == NULL) {
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Argent > %s\n", TTF_GetError());
+		  
+		SDL_FreeSurface(surfaceTexteArgent);
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+	SDL_FreeSurface(surfaceTexteArgent);
+	
+	SDL_QueryTexture(textureTexteArgent, NULL, NULL, &positionTexteArgent.w, &positionTexteArgent.h);
+	positionTexteArgent.x = FENETRE_LARGEUR  - 250;
+	positionTexteArgent.y = positionTexteScore.h+positionTexteKillTotal.h +20;// prend la position de la KillTotal et du score pour afficher l'argent en dessous 
+	/*Fin Argent*/
+	
 
 	
 
-  /* -----------------------------------------------------------Fin Initialisation du texte Vie Argent Tués---------------------------------------------*/
+  /* -----------------------------------------------------------Fin Initialisation du texte Vie Argent KillTotal Score---------------------------------------------*/
 
-    SDL_FreeSurface(surfaceTexteVie);
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
 	while (partieContinuer && programLaunched) {
@@ -284,12 +398,12 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 		
 	
-		
+	  /* -----------------------------------------------------------Gestion du texte Vie Argent KillTotal Score---------------------------------------------*/	
 		/* Mettre a jour le texte  */
 		if (base01.vie != verifVie)
 		{
 			verifVie = base01.vie;
-			strTexteVie[6]   =   '\0' ;
+			strTexteVie[6] = '\0' ;//Supprime la fin de la chaine pour le remplacer
 			sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
 			strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
 			SDL_DestroyTexture(textureTexteVie);
@@ -297,11 +411,67 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 			surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
 			textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
 			SDL_FreeSurface(surfaceTexteVie);
+		}
+		if (manche != verifManche)
+		{
+			verifManche = manche;
+			strTexteManche[9] = '\0' ;//Supprime la fin de la chaine pour le remplacer
+			sprintf(strNbManche, "%d", manche); //convertit la vie de la base (int) en char[] 
+			strcat(strTexteManche,strNbManche); //concaténe les 2 chaines de caractères 
+			SDL_DestroyTexture(textureTexteManche);
 			
+			surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir); 
+			textureTexteManche = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteManche);
+			SDL_FreeSurface(surfaceTexteManche);
+		}
+		if (score!= verifScore)
+		{
+			verifScore = score;
+			strTexteScore[8] = '\0' ;//Supprime la fin de la chaine pour le remplacer
+			sprintf(strNbScore, "%d", score); //convertit (int) en char[] 
+			strcat(strTexteScore,strNbScore); //concaténe les 2 chaines de caractères 
+			SDL_DestroyTexture(textureTexteScore);
+			
+			surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir); 
+			textureTexteScore = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteScore);
+			SDL_FreeSurface(surfaceTexteScore);
+		}
+		if (killTotal!= verifKillTotal)
+		{
+			verifKillTotal = killTotal;
+			strTexteKillTotal[12] = '\0' ;//Supprime la fin de la chaine pour le remplacer
+			sprintf(strNbKillTotal, "%d", killTotal); //convertit (int) en char[] 
+			strcat(strTexteKillTotal,strNbKillTotal); //concaténe les 2 chaines de caractères 
+			SDL_DestroyTexture(textureTexteKillTotal);
+			
+			surfaceTexteKillTotal = TTF_RenderText_Blended(police25, strTexteKillTotal, maCouleurNoir); 
+			textureTexteKillTotal = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteKillTotal);
+			SDL_FreeSurface(surfaceTexteKillTotal);
+		}
+		if (argent != verifArgent)
+		{
+			verifArgent = argent;
+			strTexteArgent[9] = '\0' ;//Supprime la fin de la chaine pour le remplacer
+			sprintf(strNbArgent, "%d", argent); //convertit (int) en char[] 
+			strcat(strTexteArgent,strNbArgent); //concaténe les 2 chaines de caractères 
+			SDL_DestroyTexture(textureTexteArgent);
+			
+			surfaceTexteArgent = TTF_RenderText_Blended(police25, strTexteArgent, maCouleurNoir); 
+			textureTexteArgent = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteArgent);
+			SDL_FreeSurface(surfaceTexteArgent);
 		}
 		
 			/* Afficher le texte  */
         SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
+		SDL_RenderCopy(pRenderer, textureTexteManche, NULL, &positionTexteManche);
+		SDL_RenderCopy(pRenderer, textureTexteScore, NULL, &positionTexteScore);
+		SDL_RenderCopy(pRenderer, textureTexteKillTotal, NULL, &positionTexteKillTotal);
+		SDL_RenderCopy(pRenderer, textureTexteArgent, NULL, &positionTexteArgent);
+
+
+		
+		
+	/* -----------------------------------------------------------Fin Gestion du texte Vie Argent KillTotal Score---------------------------------------------*/
 
 		limiteFPS(limite);
 
@@ -309,6 +479,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		if (base01.vie <= 0) {
 			menuDefaite(pRenderer, &partieContinuer, programLaunched);
 		}
+
 
 		while (SDL_PollEvent(&eventsJeu)) {
 			switch (eventsJeu.type) {
@@ -345,6 +516,10 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 /*-------------------------------------------------------- Fin de la boucle principale d'une partie ------------------------------------------------------*/
 	SDL_DestroyTexture(pTextureFond);
 	SDL_DestroyTexture(textureTexteVie);
+	SDL_DestroyTexture(textureTexteManche);
+	SDL_DestroyTexture(textureTexteScore);
+	SDL_DestroyTexture(textureTexteKillTotal);
+	SDL_DestroyTexture(textureTexteArgent);
 	TTF_CloseFont(police25);
 	listeEnnemi1 = supprimerToutEn(&listeEnnemi1);
 	listeEnnemi2 = supprimerToutEn(&listeEnnemi2);
