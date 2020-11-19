@@ -69,57 +69,8 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	/*Recupère la position de la souris ou la position du clic de la souris */
 	SDL_Point positionClicSouris;
 	SDL_Point positionSouri;
-
 	
-
-	    /* ----------------------------------------------------------- Initialisation du texte Vie Argent Tués---------------------------------------------*/
 	
-	SDL_Rect positionTexteVie; //Définit la position du texte 
-
-    SDL_Color maCouleurNoir = {0, 0, 0, 255};
-	char strTexteVie[10]   =   "Vie : " ;
-	char strNbVie[10];
-	int verifVie = base01.vie;
-	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
-	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
-	
-
-	TTF_Font* police25 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);//Déclaration de la police
-	if (police25 == NULL) {
-		//Creation de l'erreur ?
-		  SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
-	}
-	
-    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
-	if (surfaceTexteVie == NULL) {
-		SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
-		  
-		//TTF_CloseFont(police25);//Ferme la police 
-		
-		//???
-	}
-
-		
-    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
-	if (textureTexteVie == NULL) {
-		//Creation de l'erreur ?
-		  SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte > %s\n", TTF_GetError());
-	}
-
-	//SDL_FreeSurface(surfaceTexteVie); //Fais crash ??
-
-		
-    SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
-		positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
-		positionTexteVie.y = 0;
-	//FENETRE_HAUTEUR / 2 - positionTexteVie.h / 2;
-
-
-
-  /* -----------------------------------------------------------Fin Initialisation du texte Vie Argent Tués---------------------------------------------*/
-
-    SDL_FreeSurface(surfaceTexteVie);
-
 	
 	/* Recupère le numero de la tourelle dans la liste pour afficher ça range */
 	int indexTourelle = 0;
@@ -134,6 +85,69 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	Bool mancheEnCours = false;
 
 	int tempsEcouleDepuisDebutManche;
+
+
+	
+
+	    /* ----------------------------------------------------------- Initialisation du texte Vie Argent Tués---------------------------------------------*/
+	
+	SDL_Rect positionTexteVie; //Définit la position du texte 
+	SDL_Rect positionTexteArgent;
+	SDL_Rect positionTexteKillTotal;
+
+ /*Vie*/
+    SDL_Color maCouleurNoir = {0, 0, 0, 255};
+	char strTexteVie[10]   =   "Vie : " ;
+	char strNbVie[10];
+	int verifVie = base01.vie;
+	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
+	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
+	 /*Fin Vie*/
+	
+	 /*Argent*/
+	char strTexteArgent[20]   =   "Argent : " ;
+	char strNbArgent[10];
+	int verifArgent = argent ;
+	 /*Fin Argent*/
+	
+
+	TTF_Font* police25 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);//Déclaration de la police
+	if (police25 == NULL) {
+		SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
+		partieContinuer = SDL_FALSE;
+	}
+	
+    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+	if (surfaceTexteVie == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
+		  
+		TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+
+    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
+	if (textureTexteVie == NULL) {
+		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte > %s\n", TTF_GetError());
+		  
+		SDL_FreeSurface(surfaceTexteVie);
+		//TTF_CloseFont(police25);//Ferme la police 
+		partieContinuer = SDL_FALSE;
+	}
+
+
+	SDL_FreeSurface(surfaceTexteVie);
+
+	
+    SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
+		positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
+		positionTexteVie.y = 0;
+	//FENETRE_HAUTEUR / 2 - positionTexteVie.h / 2;
+
+	
+
+  /* -----------------------------------------------------------Fin Initialisation du texte Vie Argent Tués---------------------------------------------*/
+
+    SDL_FreeSurface(surfaceTexteVie);
 
 /*---------------------------------------------------- Boucle principale d'une partie ----------------------------------------------------------------*/
 	while (partieContinuer && programLaunched) {
@@ -269,8 +283,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 		
-		/* Afficher le texte  */
-        SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
+	
 		
 		/* Mettre a jour le texte  */
 		if (base01.vie != verifVie)
@@ -280,9 +293,15 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 			sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
 			strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
 			SDL_DestroyTexture(textureTexteVie);
+			
 			surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
 			textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
+			SDL_FreeSurface(surfaceTexteVie);
+			
 		}
+		
+			/* Afficher le texte  */
+        SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
 
 		limiteFPS(limite);
 
@@ -324,10 +343,9 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		
 	}
 /*-------------------------------------------------------- Fin de la boucle principale d'une partie ------------------------------------------------------*/
-	SDL_FreeSurface(surfaceTexteVie);
-    TTF_CloseFont(police25);
 	SDL_DestroyTexture(pTextureFond);
 	SDL_DestroyTexture(textureTexteVie);
+	TTF_CloseFont(police25);
 	listeEnnemi1 = supprimerToutEn(&listeEnnemi1);
 	listeEnnemi2 = supprimerToutEn(&listeEnnemi2);
 	listeTourelle = supprimerToutTour(&listeTourelle);
