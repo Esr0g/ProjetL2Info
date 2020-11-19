@@ -70,43 +70,56 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	SDL_Point positionClicSouris;
 	SDL_Point positionSouri;
 
-	/* Initialisation du texte*/
-	TTF_Font* font = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);
-	if (font == NULL) {
+	
+
+	    /* ----------------------------------------------------------- Initialisation du texte Vie Argent Tués---------------------------------------------*/
+	
+	SDL_Rect positionTexteVie; //Définit la position du texte 
+
+    SDL_Color maCouleurNoir = {0, 0, 0, 255};
+	char strTexteVie[10]   =   "Vie : " ;
+	char strNbVie[10];
+	int verifVie = base01.vie;
+	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
+	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
+	
+
+	TTF_Font* police25 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);//Déclaration de la police
+	if (police25 == NULL) {
 		//Creation de l'erreur ?
 		  SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
 	}
 	
-	SDL_Rect positionTexteVie;
-    SDL_Color maCouleurNoir = {0, 0, 0, 255};
-	
-
-	char strTexteVie[100]   =   "Vie : " ;
-	char strNbVie[10];
-	sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
-	strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
-
-	
-    SDL_Surface *police = TTF_RenderText_Blended(font, strTexteVie, maCouleurNoir); 
-	if (police == NULL) {
-		//Creation de l'erreur ?
-		  SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
+    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+	if (surfaceTexteVie == NULL) {
+		SDL_Log("ERREUR: Creation de la surface du texte > %s\n", TTF_GetError());
+		  
+		//TTF_CloseFont(police25);//Ferme la police 
+		
+		//???
 	}
-	
-    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, police);
+
+		
+    SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
 	if (textureTexteVie == NULL) {
 		//Creation de l'erreur ?
 		  SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte > %s\n", TTF_GetError());
 	}
-	
-    SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
 
-    positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
-    positionTexteVie.y = 0;
+	//SDL_FreeSurface(surfaceTexteVie); //Fais crash ??
+
+		
+    SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
+		positionTexteVie.x = FENETRE_LARGEUR  - positionTexteVie.w -100;
+		positionTexteVie.y = 0;
 	//FENETRE_HAUTEUR / 2 - positionTexteVie.h / 2;
 
-    SDL_FreeSurface(police);
-    TTF_CloseFont(font);
+
+
+  /* -----------------------------------------------------------Fin Initialisation du texte Vie Argent Tués---------------------------------------------*/
+
+    SDL_FreeSurface(surfaceTexteVie);
+
 	
 	/* Recupère le numero de la tourelle dans la liste pour afficher ça range */
 	int indexTourelle = 0;
@@ -255,9 +268,21 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
-		//mettre a jour puis afficher le texte 
 		
+		/* Afficher le texte  */
         SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
+		
+		/* Mettre a jour le texte  */
+		if (base01.vie != verifVie)
+		{
+			verifVie = base01.vie;
+			strTexteVie[6]   =   '\0' ;
+			sprintf(strNbVie, "%d", base01.vie); //convertit la vie de la base (int) en char[] 
+			strcat(strTexteVie,strNbVie); //concaténe les 2 chaines de caractères 
+			SDL_DestroyTexture(textureTexteVie);
+			surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+			textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
+		}
 
 		limiteFPS(limite);
 
@@ -299,7 +324,8 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		
 	}
 /*-------------------------------------------------------- Fin de la boucle principale d'une partie ------------------------------------------------------*/
-
+	SDL_FreeSurface(surfaceTexteVie);
+    TTF_CloseFont(police25);
 	SDL_DestroyTexture(pTextureFond);
 	SDL_DestroyTexture(textureTexteVie);
 	listeEnnemi1 = supprimerToutEn(&listeEnnemi1);
