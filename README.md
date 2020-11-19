@@ -69,8 +69,9 @@ Ajout des fonctions pour permet de savoir si il y'a une collison entre un ennemi
 source des algo : http://sdz.tdct.org/sdz/eorie-des-collisions.html  
 Les tourelles attaques maintenant en fonction de leur vitesse d'attaque  
 Ajout de la librairie SDL_ttf  (affichage de texte)  
+Début d'affchage de la vie 
 
-### Semaine 3
+### Semaine 3  (16/11/2020-22/11/2020)
 
 Ajout d'une page "défaite" lorsque la vie de la base atteint 0  
 Il est possible de quitter ou de retourner au menu à l'aide d'un clique de la souris sur le bon boutton  
@@ -81,3 +82,6 @@ Problème rencontré: les attaques des tourelles sur les ennemis sont plutot has
 Les manches s'enchainent maintenant automatiquement (elles sont gérée dans un fichier texte, on peut changer facilement le nombre d'ennemis et on peut rajouter des manches facilement, pour l'instant il y'en a 20)  
 Il y'a maintenant le début d'un sytème de gestion d'argent (on ne peut pas poser une tourelle lorsque l'on a pas assez d'argent)  
 Il y'a aussi le début de géstion du score (+50 à chaque tourelle tuée, +150 à chaque fin de manche)  
+
+Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill avec actualisation en cours de partie 
+
