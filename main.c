@@ -15,14 +15,18 @@ int main(void)
     SDL_Renderer *pRenderer = NULL;
     SDL_bool programLaunched = SDL_TRUE;
 
-    /* Initialisation de la SDL*/
+    /**
+     * Initialisation de la SDL
+     */
     if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         SDL_Log ("ERREUR: Initialisation SDL > %s\n", SDL_GetError());
 
         exit(EXIT_FAILURE);
     }
 
-    /* Creation de la fenêtre*/
+    /**
+     * Creation de la fenêtre
+     */
     pWindow = SDL_CreateWindow("Tower Defense", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, FENETRE_LARGEUR, FENETRE_HAUTEUR, SDL_WINDOW_SHOWN);
     if (pWindow == NULL) {
         SDL_Log("ERREUR: Creation de la fenêtre > %s\n", SDL_GetError());
@@ -31,7 +35,9 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    /* Initialisation de SDL_ttf qui permet de géré le texte */
+    /**
+     * Initialisation de SDL_ttf qui permet de géré le texte
+     */
 	if (TTF_Init() < 0) {
 		SDL_Log("ERREUR: Creation de la fenêtre > %s\n", TTF_GetError());
         SDL_DestroyWindow(pWindow);
@@ -39,7 +45,9 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-    /*Création du Rendu*/
+    /**
+     * Création du Rendu
+     */
     pRenderer = SDL_CreateRenderer (pWindow, -1, SDL_RENDERER_ACCELERATED);
     if (pRenderer == NULL) {
         SDL_Log("ERREUR: Creation du Rendu > %s\n", SDL_GetError());
@@ -49,8 +57,14 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    /* Chargement des textes du Menu */
-    /** Menu */
+                        /////////////////////////////////
+                        // Chargement des textes du Menu
+                        /////////////////////////////////
+
+
+    /** 
+     * Menu
+     */
     TTF_Font *policeMenuPrcipale150 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 150);
     if (policeMenuPrcipale150 == NULL) {
         SDL_Log("ERREUR: Chargement de la police > %s\n", TTF_GetError());
@@ -86,7 +100,9 @@ int main(void)
     positionTexteMenuPrincipale.x = (FENETRE_LARGEUR / 2) - (positionTexteMenuPrincipale.w / 2);
     positionTexteMenuPrincipale.y = 100;
 
-    /** Jouer */
+    /**
+     * Jouer
+     */
     TTF_Font *policeMenuPrcipale70 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 70);
     if (policeMenuPrcipale70 == NULL) {
         SDL_Log("ERREUR: Chargement de la police > %s\n", TTF_GetError());
@@ -118,7 +134,9 @@ int main(void)
     positionTexteJouerPrincipale.y = 350;
     
 
-    /** Quitter */
+    /**
+     * Quitter
+     */
     SDL_Rect positionTexteQuitterPricipale;
 
     SDL_Surface *surfaceTexteQuitterPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Quitter", couleurBlancheTexteMenu);
@@ -147,18 +165,26 @@ int main(void)
     Bool colorationTexteJouerMP = false;
     Bool colorationTexteQuitterMP = false;
 
-/* ---------------------------------------------- Boucle principale ---------------------------------------------*/
+                                                        ///////////////////////
+/* -----------------------------------------------------// Boucle principale //--------------------------------------------------------------*/
+                                                        ///////////////////////
     while (programLaunched) {
         SDL_Event events;
 
-        /** Color l'écran en noir et affiche */
+        /**
+         * Color l'écran en noir et affiche
+         */
         SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(pRenderer);
 
-        /** Affichage du texte Menu */
+        /**
+         * Affichage du texte Menu
+         */
         SDL_RenderCopy(pRenderer, textureTexteMenuPrincipale, NULL, &positionTexteMenuPrincipale);
 
-        /* Permet mettre en rouge le texte "Jouer" lorsque la souri passe dessus dessus */
+        /**
+         * Permet mettre en rouge le texte "Jouer" lorsque la souri passe dessus dessus
+         */
 		if (SDL_PointInRect(&positionSouriMenuP, &positionTexteJouerPrincipale) && !colorationTexteJouerMP) {
 			colorationTexteJouerMP = true;
 			SDL_DestroyTexture(textureTexteJouerPrincipale);
@@ -178,7 +204,9 @@ int main(void)
 			SDL_FreeSurface(surfaceTexteJouerPrincipale);
 		}
 
-		/*Permet de colorer en rouge le cadre du texte "Jouer" */
+		/**
+         * Permet de colorer en rouge le cadre du texte "Jouer"
+         */
 		if (colorationTexteJouerMP) {
 			SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);
 			SDL_RenderDrawRect(pRenderer, &positionTexteJouerPrincipale);
@@ -187,10 +215,14 @@ int main(void)
 			SDL_RenderDrawRect(pRenderer, &positionTexteJouerPrincipale);
 		}
 
-		/* Affiche le texte "Jouer" */
+		/**
+         * Affiche le texte "Jouer"
+         */
 		SDL_RenderCopy(pRenderer, textureTexteJouerPrincipale, NULL, &positionTexteJouerPrincipale);
 
-        /* Permet mettre en rouge le texte "Quitter" lorsque la souri passe dessus dessus */
+        /**
+         * Permet mettre en rouge le texte "Quitter" lorsque la souri passe dessus dessus
+         */
 		if (SDL_PointInRect(&positionSouriMenuP, &positionTexteQuitterPricipale) && !colorationTexteQuitterMP) {
 			colorationTexteQuitterMP = true;
 			SDL_DestroyTexture(textureTexteQuitterPrincipale);
@@ -210,7 +242,9 @@ int main(void)
 			SDL_FreeSurface(surfaceTexteQuitterPrincipale);
 		}
 
-		/*Permet de colorer en rouge le cadre du texte "Quitter" */
+		/**
+         * Permet de colorer en rouge le cadre du texte "Quitter"
+         */
 		if (colorationTexteQuitterMP) {
 			SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);
 			SDL_RenderDrawRect(pRenderer, &positionTexteQuitterPricipale);
@@ -219,7 +253,9 @@ int main(void)
 			SDL_RenderDrawRect(pRenderer, &positionTexteQuitterPricipale);
 		}
 
-		/* Affiche le texte "Quitter" */
+		/**
+         * Affiche le texte "Quitter"
+         */
 		SDL_RenderCopy(pRenderer, textureTexteQuitterPrincipale, NULL, &positionTexteQuitterPricipale);
 
         SDL_RenderPresent (pRenderer);
@@ -247,7 +283,9 @@ int main(void)
         SDL_Delay(FPS_LIMITE);
     }
 
-/*-------------------------------------- Fin de la boucle principale --------------------------------------------*/
+                                                    /////////////////////////////////
+/*--------------------------------------------------// Fin de la boucle principale //-----------------------------------------------------*/
+                                                    ////////////////////////////////
 
     SDL_DestroyTexture(textureTexteJouerPrincipale);
     SDL_DestroyTexture(textureTexteQuitterPrincipale);

@@ -1,40 +1,52 @@
 #ifndef DEF_STRUCTURE
 #define DEF_STRUCTURE
 
-/* Définition du type Booléen */
+/**
+ * Définition du type Booléen
+ */
 typedef enum {
     false,
     true
 }Bool;
 
-/* Définition d'un ennemi */
+/**
+ * Définition d'un ennemi
+ */
 typedef struct Ennemi {
     int pointsLorsqueTue;
     int vie;
     SDL_Rect forme;
 }Ennemi;
 
-/* Définition de la base */
+/**
+ * Définition de la base
+ */
 typedef struct Base {
     int vie;
     SDL_Rect base;
 }Base;
 
-/* Définition d'une case du terrain */
+/**
+ * Définition d'une case du terrain
+ */
 typedef struct CaseTerrain {
     Bool occupationEmplacement;
     Bool emplacementInterdi;
     SDL_Rect position;
 }Cases;
 
-/* Définition d'un cercle */
+/**
+ * Définition d'un cercle
+ */
 typedef struct Cercle {
     Sint16 x;
     Sint16 y;
     Sint16 rayon;
 }Cercle;
 
-/*Définition d'une tourelle */
+/**
+ * Définition d'une tourelle
+ */
 typedef struct Tourelle {
     int cout;
     int degats;
@@ -45,19 +57,25 @@ typedef struct Tourelle {
     int tpsEntre2Tire;
 }Tourelle;
 
-/* Définition d'une liste de tourelles */
+/**
+ * Définition d'une liste de tourelles
+ */
 typedef struct ElementListeTourelle {
     Tourelle tourelle;
     struct ElementListeTourelle *suivant;
 }ListeTourelle;
 
-/* Définition d'une liste d'ennemis */
+/**
+ * Définition d'une liste d'ennemis
+ */
 typedef struct ElementListe {
     Ennemi en;
     struct ElementListe *suivant;
 }ListeEnnemi;
 
-/* Prototypes ListeEnnemi */
+/**
+ * Prototypes ListeEnnemi
+ */
 Bool listeEstVideEnnemi(ListeEnnemi *li);
 int ajouterEnnemi(ListeEnnemi **li);
 ListeEnnemi *supprimerTeteListeE(ListeEnnemi **li);
@@ -70,7 +88,9 @@ void setEnnemiPosition(ListeEnnemi *li, int index, int x, int y);
 void setEnnemiVie(ListeEnnemi *li, int index, int v);
 void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h);
 
-/* prototypes ListeTourelle */
+/**
+ * prototypes ListeTourelle
+ */
 Bool listeEstVideTourelle (ListeTourelle *li);
 int ajouterTourelle (ListeTourelle **li);
 ListeTourelle *supprimerTeteListeT (ListeTourelle **li);

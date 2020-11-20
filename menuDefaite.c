@@ -22,7 +22,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
     SDL_Rect poisitionTexteMenu;
     SDL_Rect positionTexteQuitter;
 
-    /* Initialisation du texte "Perdu !"*/
+    /**
+	 * Initialisation du texte "Perdu !"
+	 */
 	TTF_Font* font150 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 150);
 	if (font150 == NULL) {
 		SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
@@ -58,9 +60,11 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 
 	SDL_FreeSurface(police150);
     TTF_CloseFont(font150);
-	/*--------Fin de l'iitialisation du texte "Perdu !"---------*/
 
-	/* Initialisation de la police pour "Quitter", "Rejouer" et "Menu" */
+	/////////////////////////////////////////////////////////////////
+	//Initialisation de la police pour "Quitter", "Rejouer" et "Menu"
+	/////////////////////////////////////////////////////////////////
+
 	TTF_Font* font70 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 70);
 	if (font70 == NULL) {
 		SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
@@ -69,7 +73,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
         programLaunched = SDL_FALSE;
 	}
 
-	/* Initialisation du Texte "Quitter" */
+	/**
+	 * Initialisation du Texte "Quitter"
+	 */
 	SDL_Surface *policeQuitterBlanche = TTF_RenderText_Blended(font70, "Quitter", couleurBlanche); 
 	SDL_Texture *textureTexteQuitter = SDL_CreateTextureFromSurface(pRenderer, policeQuitterBlanche);
 	SDL_FreeSurface(policeQuitterBlanche);
@@ -78,7 +84,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
     positionTexteQuitter.x = (FENETRE_LARGEUR / 2) - (positionTexteQuitter.w /2);
     positionTexteQuitter.y = 550;
 
-	/* Initialisation du Texte "Menu" */
+	/**
+	 * Initialisation du Texte "Menu"
+	 */
 	SDL_Surface *policeMenu = TTF_RenderText_Blended(font70, "Menu", couleurBlanche); 
 	SDL_Texture *textureTexteMenu = SDL_CreateTextureFromSurface(pRenderer, policeMenu);
 	SDL_FreeSurface(policeMenu);
@@ -87,27 +95,37 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
     poisitionTexteMenu.x = (FENETRE_LARGEUR / 2) - (poisitionTexteMenu.w / 2);
     poisitionTexteMenu.y = 350;
 
-	/*Poisition de la souris */
+	/**
+	 * Poisition de la souris
+	 */
 	SDL_Point positionSouri = {0, 0};
 	SDL_Point positionClicSouri = {0, 0};
 
 	Bool coloreTexteQuitter = false;
 	Bool coloreTexteMenu = false;
 
-    /* ----------------------------------------------------------- Boucle principal du menuDefaite ---------------------------------------------*/
+															/////////////////////////////////////
+    /*------------------------------------------------------// Boucle principal du menuDefaite //---------------------------------------------*/
+															/////////////////////////////////////
 
     while (menuContinuer) {
         SDL_Event eventMenuDefait;
 		SDL_Delay(33);
 		
-		/* Color le fond en noir et noettoye le rendu */
+		/**
+		 * Color le fond en noir et noettoye le rendu
+		 */
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(pRenderer);
 
-		/* Permet d'afichier le texte Perdu */
+		/**
+		 * Permet d'afichier le texte Perdu
+		 */
         SDL_RenderCopy(pRenderer, textureTextePerdu, NULL, &positionTextePerdu);
 
-		/* Permet mettre en rouge le texte "Quitter" quitter lorsque la souri est dessus */
+		/**
+		 * Permet mettre en rouge le texte "Quitter" quitter lorsque la souri est dessus
+		 */
 		if (SDL_PointInRect(&positionSouri, &positionTexteQuitter) && coloreTexteQuitter == false ) {
 			coloreTexteQuitter = true;
 			SDL_DestroyTexture(textureTexteQuitter);
@@ -127,7 +145,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			SDL_FreeSurface(policeQuitterBlanche);
 		}
 
-		/*Permet de colorer en rouge le cadre du texte "Quitter" */
+		/**
+		 * Permet de colorer en rouge le cadre du texte "Quitter"
+		 */
 		if (coloreTexteQuitter == true) {
 			SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);
 			SDL_RenderDrawRect(pRenderer, &positionTexteQuitter);
@@ -136,10 +156,14 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			SDL_RenderDrawRect(pRenderer, &positionTexteQuitter);
 		}
 
-		/* Affiche le texte "Quitter" */
+		/**
+		 * Affiche le texte "Quitter"
+		 */
 		SDL_RenderCopy(pRenderer, textureTexteQuitter, NULL, &positionTexteQuitter);
 
-		/* Permet mettre en rouge le texte "Menu" lorsque la souri est dessus */
+		/**
+		 * Permet mettre en rouge le texte "Menu" lorsque la souri est dessus
+		 */
 		if (SDL_PointInRect(&positionSouri, &poisitionTexteMenu) && coloreTexteMenu == false ) {
 			coloreTexteMenu = true;
 			SDL_DestroyTexture(textureTexteMenu);
@@ -159,7 +183,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			SDL_FreeSurface(policeMenu);
 		}
 
-		/*Permet de colorer en rouge le cadre du texte "Menu" */
+		/**
+		 * Permet de colorer en rouge le cadre du texte "Menu"
+		 */
 		if (coloreTexteMenu == true) {
 			SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);
 			SDL_RenderDrawRect(pRenderer, &poisitionTexteMenu);
@@ -168,7 +194,9 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 			SDL_RenderDrawRect(pRenderer, &poisitionTexteMenu);
 		}
 
-		/* Affiche le texte "Menu" */
+		/**
+		 * Affiche le texte "Menu"
+		 */
 		SDL_RenderCopy(pRenderer, textureTexteMenu, NULL, &poisitionTexteMenu);
 
   		while (SDL_PollEvent(&eventMenuDefait)) {
@@ -196,8 +224,10 @@ void menuDefaite(SDL_Renderer *pRenderer, SDL_bool *menu, SDL_bool *programLaunc
 
 		SDL_RenderPresent (pRenderer);
     }
-
-    /*-------------------------------------------------------- Fin de la boucle principal du menuDefaite ---------------------------------------*/
+	
+														///////////////////////////////////////////////
+    /*--------------------------------------------------// Fin de la boucle principal du menuDefaite //---------------------------------------*/
+														///////////////////////////////////////////////
 	SDL_DestroyTexture (textureTextePerdu);
 	SDL_DestroyTexture (textureTexteQuitter);
 	SDL_DestroyTexture (textureTexteMenu);

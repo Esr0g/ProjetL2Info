@@ -4,6 +4,10 @@
 
 #include "structures.h"
 
+                                                    ////////////////////////////////////////
+                                                    // Fonctions sur les listes d'ennemis //
+                                                    ////////////////////////////////////////
+
 /**
  * Permet d'ajouter un nouvel ennemi à la liste
  * @param li pointeur de pointeur de la liste
@@ -248,9 +252,9 @@ void setEnemmiTaille(ListeEnnemi *li, int index, int w, int h) {
     e->forme.h = h;
 }
 
-
-/*-----------------------------------------Fonctions sur les listes de tourelles---------------------------------------------------*/
-
+                                                        ///////////////////////////////////////////
+                                                        // Fonctions sur les listes de tourelles //
+                                                        ///////////////////////////////////////////
 /**
  * @return true si la liste est vide
  */

@@ -82,6 +82,4 @@ Problème rencontré: les attaques des tourelles sur les ennemis sont plutot has
 Les manches s'enchainent maintenant automatiquement (elles sont gérée dans un fichier texte, on peut changer facilement le nombre d'ennemis et on peut rajouter des manches facilement, pour l'instant il y'en a 20)  
 Il y'a maintenant le début d'un sytème de gestion d'argent (on ne peut pas poser une tourelle lorsque l'on a pas assez d'argent)  
 Il y'a aussi le début de géstion du score (+50 à chaque tourelle tuée, +150 à chaque fin de manche)  
-
-Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill avec actualisation en cours de partie 
-
+Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill avec actualisation en cours de partie  
