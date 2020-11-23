@@ -83,3 +83,5 @@ Les manches s'enchainent maintenant automatiquement (elles sont gérée dans un 
 Il y'a maintenant le début d'un sytème de gestion d'argent (on ne peut pas poser une tourelle lorsque l'on a pas assez d'argent)  
 Il y'a aussi le début de géstion du score (+50 à chaque tourelle tuée, +150 à chaque fin de manche)  
 Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill avec actualisation en cours de partie  
+
+### Semaine 4 (23/11/2020-29/11/2020)
