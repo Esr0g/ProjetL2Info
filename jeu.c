@@ -967,13 +967,14 @@ Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
  */
 void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 	int tempsAuTick = SDL_GetTicks();
-	Bool collision = false;
-	int j = 0;
+	Bool collision;
+	int j;
 
 	for (int i = 0; i < listeTailleTour(lt); i++) {
-		j = 0;
+		j = listeTailleEn(le) - 1;
+		collision = false;
 
-		while (j < listeTailleEn(le) && !collision) {
+		while (j + 1 >= listeTailleEn(le) && !collision) {
 
 			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
 				if ((tempsAuTick - getTourelle(lt, i)->tpsEntre2Tire) > getTourelle(lt, i)->vitesseAttaque) {
@@ -982,7 +983,7 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 				}
 				collision = true;
 			} else {
-				j++;
+				j--;
 			}
 		}	
 	}
