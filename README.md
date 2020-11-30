@@ -86,6 +86,6 @@ Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill a
 
 ### Semaine 4 (23/11/2020 - 29/11/2020)
 
-(Rien n'a été fait cette semaine)  
+L'algorithme qui permet de faire attaquer les tourelles a été amélioré
 
 ### Semaine 5 (30/11/2020 - 06/12/2020)
