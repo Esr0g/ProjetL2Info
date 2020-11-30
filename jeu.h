@@ -29,6 +29,7 @@ int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By);
 Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1);
 
 void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt);
+void afficherLaser(SDL_Renderer *pRenderer, ListeTourelle *lt, ListeEnnemi *le);
 
 void choixDeLaManche (int manche, int *nbEnnemiDebut1, int *nbEnnemiDebut2);
 

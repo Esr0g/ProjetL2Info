@@ -418,6 +418,26 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		/**
+		 * Color les tourelles lorsqu'il y'en a
+		 */
+		if(!listeEstVideTourelle(listeTourelle)) {
+			colorationTourelle(pRenderer, listeTourelle);
+		}
+
+		/** 
+		 * Attaque des ennemis par les tourelles
+		 * Et affiche les laser
+		 */
+		if (!listeEstVideEnnemi(listeEnnemi1) && !listeEstVideTourelle(listeTourelle)) {
+			attaqueEnnemi (listeEnnemi1, listeTourelle);
+			afficherLaser (pRenderer, listeTourelle, listeEnnemi1);
+		}
+		if (!listeEstVideEnnemi(listeEnnemi2) && !listeEstVideTourelle(listeTourelle)) {
+			attaqueEnnemi (listeEnnemi2, listeTourelle);
+			afficherLaser (pRenderer, listeTourelle, listeEnnemi2);
+		}
+
+		/**
 		 * Color les énnemis de la liste 1 lorsqu'il y'en a
 		 */
 		if (!listeEstVideEnnemi(listeEnnemi1)) {
@@ -429,21 +449,6 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		 */
 		if (!listeEstVideEnnemi(listeEnnemi2)) {
 			colorationEnnemi(pRenderer, listeEnnemi2);
-		}
-
-		/**
-		 * Color les tourelles lorsqu'il y'en a
-		 */
-		if(!listeEstVideTourelle(listeTourelle)) {
-			colorationTourelle(pRenderer, listeTourelle);
-		}
-
-		/* Attaque des ennemis par les tourelles */
-		if (!listeEstVideEnnemi(listeEnnemi1) && !listeEstVideTourelle(listeTourelle)) {
-			attaqueEnnemi (listeEnnemi1, listeTourelle);
-		}
-		if (!listeEstVideEnnemi(listeEnnemi2) && !listeEstVideTourelle(listeTourelle)) {
-			attaqueEnnemi (listeEnnemi2, listeTourelle);
 		}
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
@@ -1025,4 +1030,27 @@ void choixDeLaManche (int manche, int *nbEnnemiDebut1, int *nbEnnemiDebut2) {
 	*nbEnnemiDebut2 = (tabInt[0] - '0') * 100 + (tabInt[1] - '0') * 10 + (tabInt[2] - '0');
 
 	fclose (indicationsManche);
+}
+
+void afficherLaser(SDL_Renderer *pRenderer, ListeTourelle *lt, ListeEnnemi *le) {
+
+	Bool touche;
+	int j;
+
+	for (int i = 0; i < listeTailleTour(lt); i++) {
+		j = listeTailleEn(le) - 1;
+		touche = false;
+
+		while (j + 1 >= listeTailleEn(le) && !touche) {
+
+			if (collisionCercleRectangle (getTourelle(lt, i)->range, getEnnemi(le, j)->forme)) {
+				thickLineRGBA (pRenderer, getTourelle(lt, i)->forme.x + TAILLE_TOURELLE / 2, getTourelle(lt, i)->forme.y + TAILLE_TOURELLE / 2,
+							getEnnemi(le, j)->forme.x + TAILLE_ENNEMI / 2, getEnnemi(le, j)->forme.y + TAILLE_ENNEMI / 2,
+							5, 240, 0, 32, 255);
+				touche = true;
+			} else {
+				j--;
+			}
+		}	
+	}
 }
