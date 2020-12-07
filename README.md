@@ -92,5 +92,6 @@ L'algorithme qui permet de faire attaquer les tourelles a été amélioré
 
 Les tourelles tirent maintenant un laser sur les ennemis  
 Détection d'un problème concernant le tire des tourelles: elles s'arretent parfois de tirer pour des raisons obscure  
+Début de l'affichage de la vie des ennemis en local
 
 ### Semaine 6 (7/12/2020 - 13/12/2020)  
