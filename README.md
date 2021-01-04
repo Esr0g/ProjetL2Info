@@ -89,3 +89,9 @@ Ajout de l'affichage de la vie du score de l'argent de la manche et nb de Kill a
 L'algorithme qui permet de faire attaquer les tourelles a été amélioré
 
 ### Semaine 5 (30/11/2020 - 06/12/2020)
+
+Les tourelles tirent maintenant un laser sur les ennemis  
+Détection d'un problème concernant le tire des tourelles: elles s'arretent parfois de tirer pour des raisons obscure  
+Début de l'affichage de la vie des ennemis en local
+
+### Semaine 6 (7/12/2020 - 13/12/2020)  
