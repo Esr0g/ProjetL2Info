@@ -829,7 +829,7 @@ void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, in
 	(*li)->tourelle.range.x = tab[n][m].position.x + 32;
 	(*li)->tourelle.range.y = tab[n][m].position.y + 32;
 	(*li)->tourelle.range.rayon = RAYON_DEPART_TOURELLE;
-	(*li)->tourelle.degats = 30;
+	(*li)->tourelle.degats = TOURELLE_DEGAT_DEPART;
 	(*li)->tourelle.vitesseAttaque = VITESSE_D_ATTAQUE_TOURELLE_DEPART;
 	(*li)->tourelle.tpsEntre2Tire = SDL_GetTicks();
 	(*li)->tourelle.cout = 200;
