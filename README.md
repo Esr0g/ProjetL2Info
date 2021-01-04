@@ -95,3 +95,14 @@ Détection d'un problème concernant le tire des tourelles: elles s'arretent par
 Début de l'affichage de la vie des ennemis en local
 
 ### Semaine 6 (7/12/2020 - 13/12/2020)  
+Rien.  
+
+### Semaine 7 (14/12/2020 - 20/12/2020)
+Rien.  
+
+### Semaine 8 (21/12/2020 - 27/12/2020)
+Rien.  
+
+### Semaine 9 (28/12/2028 - 03/01/2020)
+Ajout d'un dossier avec une version du jeu ou les ennemis trouve leur chemin grâce à un algorithme. Gestion possible de niveau à l'aide de fichiers textes  
+Problème : mauvaise gestion de l'alocation mémoire  
