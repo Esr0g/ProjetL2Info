@@ -105,3 +105,4 @@ Rien.
 
 ### Semaine 9 (28/12/2028 - 03/01/2020)
 Ajout d'un dossier avec une version du jeu ou les ennemis trouve leur chemin grâce à un algorithme. Gestion possible de niveau à l'aide de fichiers textes  
+Problème : mauvaise gestion de l'alocation mémoire  
