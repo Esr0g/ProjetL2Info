@@ -58,6 +58,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	/**
 	 * Permet de faire un timer pour le spawn des énnemis
 	 * Yo !
+	 * fils2
 	 */
 	SDL_TimerID initialisationListeEnnemiDebut1;
 	Bool initialisationListeEnnemiDebut1Bool = false;
