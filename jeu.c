@@ -17,6 +17,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	/**
 	 * Chargelment de l'image du fond
+	 *
 	 */
     SDL_Surface *pFond = SDL_LoadBMP ("textures/Terrain.bmp");
     if (pFond == NULL) {
@@ -34,13 +35,12 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
     }
 
 	SDL_FreeSurface (pFond);
-
-	/** 
+	/**
 	 * Initialisation de la base
 	 */
 	Base base01; base01.base.h = 64; base01.base.w = 128 ; base01.base.x = 448; base01.base.y = 896; base01.vie = 3;
-	
-	
+
+
 	ListeEnnemi *listeEnnemi1 = NULL; 		// initialisation de la liste d'ennemis
 	ListeEnnemi *listeEnnemi2 = NULL;
 	int nbEnnemiDebut1 = 0;		 // nombre d'ennmis choisi
@@ -48,14 +48,14 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	ListeTourelle *listeTourelle = NULL; 		// initialisation de la liste de tourelle
 
-	/** 
+	/**
 	 * Initialisation des cases du jeu
 	 */
 	Cases **tabCase = allouerTab2D (15, 18);
 	int ligne;
 	int colone;
 
-	/** 
+	/**
 	 * Permet de faire un timer pour le spawn des énnemis
 	 */
 	SDL_TimerID initialisationListeEnnemiDebut1;
@@ -64,7 +64,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	SDL_TimerID initialisationListeEnnemiDebut2;
 	Bool initialisationListeEnnemiDebut2Bool = false;
 	Bool timerPopEnnemi2Remove = false;
-	
+
 	/**
 	 * Permet de faire un timer pour le déplacement des énnemis
 	 */
@@ -83,9 +83,9 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 	 */
 	SDL_Point positionClicSouris;
 	SDL_Point positionSouri;
-	
-	
-	
+
+
+
 	/**
 	 * Recupère le numero de la tourelle dans la liste pour afficher ça range
 	 */
@@ -110,174 +110,174 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 							// Initialisation du texte Vie Argent KillTotal Score //
 							////////////////////////////////////////////////////////
 
-	SDL_Rect positionTexteVie; 		//Définit la position du texte 
+	SDL_Rect positionTexteVie; 		//Définit la position du texte
 	SDL_Rect positionTexteManche;
 	SDL_Rect positionTexteScore;
 	SDL_Rect positionTexteKillTotal;
 	SDL_Rect positionTexteArgent;
-	
+
 	TTF_Font* police25 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 25);		//Déclaration de la police
 	if (police25 == NULL) {
 		SDL_Log("ERREUR: Creation de la police à partir d'une d'un fichier  > %s\n", TTF_GetError());
 		partieContinuer = SDL_FALSE;
 	}
 
-	/** 
+	/**
 	 * Vie
 	 */
 	SDL_Color maCouleurNoir = {0, 0, 0, 255};
 	char strTexteVie[20]   =   "Vie : " ;
 	char strNbVie[10];
 	int verifVie = base01.vie;
-	sprintf(strNbVie, "%d", base01.vie); 		//convertit la vie de la base (int) en char[] 
-	strcat(strTexteVie,strNbVie); 		//concaténe les 2 chaines de caractères 
-	
-    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+	sprintf(strNbVie, "%d", base01.vie); 		//convertit la vie de la base (int) en char[]
+	strcat(strTexteVie,strNbVie); 		//concaténe les 2 chaines de caractères
+
+    SDL_Surface *surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir);
 	if (surfaceTexteVie == NULL) {
 		SDL_Log("ERREUR: Creation de la surface du texte Vie> %s\n", TTF_GetError());
-		  
+
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
-	
+
     SDL_Texture *textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
 	if (textureTexteVie == NULL) {
 		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Vie > %s\n", TTF_GetError());
-		  
+
 		SDL_FreeSurface(surfaceTexteVie);
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
 	SDL_FreeSurface(surfaceTexteVie);
-	
+
     SDL_QueryTexture(textureTexteVie, NULL, NULL, &positionTexteVie.w, &positionTexteVie.h);
 	positionTexteVie.x = 10;
 	positionTexteVie.y = 0;
-	
+
 	/**
 	 * Score
 	 */
 	char strTexteScore[20]   =   "Score : " ;
 	char strNbScore[10];
 	int verifScore = score;
-	sprintf(strNbScore, "%d", score); 		//convertit la Score de la base (int) en char[] 
-	strcat(strTexteScore,strNbScore); 		//concaténe les 2 chaines de caractères 
-	
-    SDL_Surface *surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir); 
+	sprintf(strNbScore, "%d", score); 		//convertit la Score de la base (int) en char[]
+	strcat(strTexteScore,strNbScore); 		//concaténe les 2 chaines de caractères
+
+    SDL_Surface *surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir);
 	if (surfaceTexteScore == NULL) {
 		SDL_Log("ERREUR: Creation de la surface du texte Score> %s\n", TTF_GetError());
-		  
-		TTF_CloseFont(police25); 
+
+		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
-	
+
     SDL_Texture *textureTexteScore = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteScore);
 	if (textureTexteScore == NULL) {
 		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Score > %s\n", TTF_GetError());
-		  
+
 		SDL_FreeSurface(surfaceTexteScore);
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
 	SDL_FreeSurface(surfaceTexteScore);
-	
+
     SDL_QueryTexture(textureTexteScore, NULL, NULL, &positionTexteScore.w, &positionTexteScore.h);
 	positionTexteScore.x = FENETRE_LARGEUR-250;
 	positionTexteScore.y =0;
-	
+
 	/**
 	 * Manche
 	 */
 	char strTexteManche[20]   =   "Manche : " ;
 	char strNbManche[10];
 	int verifManche = manche;
-	sprintf(strNbManche, "%d", manche); 		//convertit la Manche de la base (int) en char[] 
-	strcat(strTexteManche,strNbManche); 		//concaténe les 2 chaines de caractères 
-	
-    SDL_Surface *surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir); 	
+	sprintf(strNbManche, "%d", manche); 		//convertit la Manche de la base (int) en char[]
+	strcat(strTexteManche,strNbManche); 		//concaténe les 2 chaines de caractères
+
+    SDL_Surface *surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir);
 	if (surfaceTexteManche == NULL) {
 		SDL_Log("ERREUR: Creation de la surface du texte Manche> %s\n", TTF_GetError());
-		  
+
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
-	
+
     SDL_Texture *textureTexteManche = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteManche);
 	if (textureTexteManche == NULL) {
 		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Manche > %s\n", TTF_GetError());
-		  
+
 		SDL_FreeSurface(surfaceTexteManche);
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
 	SDL_FreeSurface(surfaceTexteManche);
-	
+
     SDL_QueryTexture(textureTexteManche, NULL, NULL, &positionTexteManche.w, &positionTexteManche.h);
 	positionTexteManche.x = 0;
 	positionTexteManche.y =positionTexteVie.h + 10;
-	
+
 	/**
 	 * KillTotal
 	 */
 	char strTexteKillTotal[20]   =   "KillTotal : " ;
 	char strNbKillTotal[10];
 	int verifKillTotal = killTotal;
-	sprintf(strNbKillTotal, "%d", killTotal); //convertit la KillTotal de la base (int) en char[] 
-	strcat(strTexteKillTotal,strNbKillTotal); //concaténe les 2 chaines de caractères 
-	
+	sprintf(strNbKillTotal, "%d", killTotal); //convertit la KillTotal de la base (int) en char[]
+	strcat(strTexteKillTotal,strNbKillTotal); //concaténe les 2 chaines de caractères
+
     SDL_Surface *surfaceTexteKillTotal = TTF_RenderText_Blended(police25, strTexteKillTotal, maCouleurNoir); //Surface Texte KillTotal
 	if (surfaceTexteKillTotal == NULL) {
 		SDL_Log("ERREUR: Creation de la surface du texte KillTotal> %s\n", TTF_GetError());
-		  
-		TTF_CloseFont(police25);//Ferme la police 
+
+		TTF_CloseFont(police25);//Ferme la police
 		partieContinuer = SDL_FALSE;
 	}
-	
+
     SDL_Texture *textureTexteKillTotal = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteKillTotal);//Texture Texte KillTotal
 	if (textureTexteKillTotal == NULL) {
 		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte KillTotal > %s\n", TTF_GetError());
-		  
+
 		SDL_FreeSurface(surfaceTexteKillTotal);
-		TTF_CloseFont(police25);//Ferme la police 
+		TTF_CloseFont(police25);//Ferme la police
 		partieContinuer = SDL_FALSE;
 	}
 	SDL_FreeSurface(surfaceTexteKillTotal);
-	
+
     SDL_QueryTexture(textureTexteKillTotal, NULL, NULL, &positionTexteKillTotal.w, &positionTexteKillTotal.h);
 	positionTexteKillTotal.x = FENETRE_LARGEUR-250;
-	positionTexteKillTotal.y =positionTexteScore.h+10;// prend la position du score  pour afficher le nb de KillTotal en dessous 
-	
+	positionTexteKillTotal.y =positionTexteScore.h+10;// prend la position du score  pour afficher le nb de KillTotal en dessous
+
 	/**
 	 * Argent
 	 */
 	char strTexteArgent[20]   =   "Argent : " ;
 	char strNbArgent[10];
 	int verifArgent = argent ;
-	sprintf(strNbArgent, "%d", argent); //convertit la vie de la base (int) en char[] 
-	strcat(strTexteArgent,strNbArgent); //concaténe les 2 chaines de caractères 
+	sprintf(strNbArgent, "%d", argent); //convertit la vie de la base (int) en char[]
+	strcat(strTexteArgent,strNbArgent); //concaténe les 2 chaines de caractères
 
 	SDL_Surface *surfaceTexteArgent = TTF_RenderText_Blended(police25, strTexteArgent, maCouleurNoir);
 	if (surfaceTexteArgent == NULL) {
 		SDL_Log("ERREUR: Creation de la surface du texte argent  > %s\n", TTF_GetError());
-		  
+
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
-	
+
 	SDL_Texture *textureTexteArgent = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteArgent);
 	if (textureTexteArgent == NULL) {
 		SDL_Log("ERREUR: Creation de la texture a partir de la surface du texte Argent > %s\n", TTF_GetError());
-		  
+
 		SDL_FreeSurface(surfaceTexteArgent);
 		TTF_CloseFont(police25);
 		partieContinuer = SDL_FALSE;
 	}
 	SDL_FreeSurface(surfaceTexteArgent);
-	
+
 	SDL_QueryTexture(textureTexteArgent, NULL, NULL, &positionTexteArgent.w, &positionTexteArgent.h);
 	positionTexteArgent.x = FENETRE_LARGEUR  - 250;
-	positionTexteArgent.y = positionTexteScore.h+positionTexteKillTotal.h +20; // prend la position de la KillTotal et du score pour afficher l'argent en dessous 
-	
+	positionTexteArgent.y = positionTexteScore.h+positionTexteKillTotal.h +20; // prend la position de la KillTotal et du score pour afficher l'argent en dessous
+
 										//////////////////////////////////////////////////////////////
 										//	Fin Initialisation du texte Vie Argent KillTotal Score  //
 										//////////////////////////////////////////////////////////////
@@ -288,7 +288,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 													  ////////////////////////////////////
 	while (partieContinuer && programLaunched) {
 		SDL_Event eventsJeu;
-		 
+
 		SDL_RenderCopy(pRenderer, pTextureFond, NULL, NULL);
 
 		/**
@@ -330,7 +330,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 			timerPopEnnemi2Remove = true;
 		}
 
-		/** 
+		/**
 		 * Lance une nouvelle manche si la manche précédente est terminéee
 		 */
 		if (mancheEnCours && listeEstVideEnnemi(listeEnnemi1) && listeEstVideEnnemi(listeEnnemi2) && (SDL_GetTicks() - tempsEcouleDepuisDebutManche >= 10000)) {
@@ -346,7 +346,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		/**
-		 * Active le timer de déplcaement uniquement lorsque il y a des ennemis 
+		 * Active le timer de déplcaement uniquement lorsque il y a des ennemis
 		 * (pour les ennemis qui viennent de la gauche)
 		 */
 		if ((listeTailleEn(listeEnnemi1) > 0) && (!mouvementEnnemi1Bool)) {
@@ -358,7 +358,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		/**
-		 * Active le timer de déplcaement uniquement lorsque il y a des ennemis 
+		 * Active le timer de déplcaement uniquement lorsque il y a des ennemis
 		 * (pour les ennemis qui viennent du haut)
 		 */
 		if ((listeTailleEn(listeEnnemi2) > 0) && (!mouvementEnnemi2Bool)) {
@@ -370,7 +370,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		/**
-		 * Supprime un ennemi de la liste 1 lorsqu'il rentre en collision avec la base 
+		 * Supprime un ennemi de la liste 1 lorsqu'il rentre en collision avec la base
 		 * ou lorsque ses point de vie atteigent 0
 		 */
 		if (!listeEstVideEnnemi(listeEnnemi1)) {
@@ -411,8 +411,8 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		 * Color les cerlces lorsque la souri est dessus
 		 */
 		if (souriSurTourelle(&positionSouri, listeTourelle, &indexTourelle)) {
-			filledCircleRGBA (pRenderer, getTourelle(listeTourelle, indexTourelle)->range.x, 
-								getTourelle(listeTourelle, indexTourelle)->range.y, 
+			filledCircleRGBA (pRenderer, getTourelle(listeTourelle, indexTourelle)->range.x,
+								getTourelle(listeTourelle, indexTourelle)->range.y,
 								getTourelle(listeTourelle, indexTourelle)->range.rayon,
 								149, 126, 118, 100);
 		}
@@ -424,7 +424,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 			colorationTourelle(pRenderer, listeTourelle);
 		}
 
-		/** 
+		/**
 		 * Attaque des ennemis par les tourelles
 		 * Et affiche les laser
 		 */
@@ -452,7 +452,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
-		
+
 		///////////////////////////////////////////////
 	    // Gestion du texte Vie Argent KillTotal Score
 		///////////////////////////////////////////////
@@ -461,11 +461,11 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		{
 			verifVie = base01.vie;
 			strTexteVie[6] = '\0' ;			//Supprime la fin de la chaine pour le remplacer
-			sprintf(strNbVie, "%d", base01.vie); 		//convertit la vie de la base (int) en char[] 
-			strcat(strTexteVie,strNbVie); 		//concaténe les 2 chaines de caractères 
+			sprintf(strNbVie, "%d", base01.vie); 		//convertit la vie de la base (int) en char[]
+			strcat(strTexteVie,strNbVie); 		//concaténe les 2 chaines de caractères
 			SDL_DestroyTexture(textureTexteVie);
-			
-			surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir); 
+
+			surfaceTexteVie = TTF_RenderText_Blended(police25, strTexteVie, maCouleurNoir);
 			textureTexteVie = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteVie);
 			SDL_FreeSurface(surfaceTexteVie);
 		}
@@ -473,11 +473,11 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		{
 			verifManche = manche;
 			strTexteManche[9] = '\0' ;			//Supprime la fin de la chaine pour le remplacer
-			sprintf(strNbManche, "%d", manche); 		//convertit la vie de la base (int) en char[] 
-			strcat(strTexteManche,strNbManche); 		//concaténe les 2 chaines de caractères 
+			sprintf(strNbManche, "%d", manche); 		//convertit la vie de la base (int) en char[]
+			strcat(strTexteManche,strNbManche); 		//concaténe les 2 chaines de caractères
 			SDL_DestroyTexture(textureTexteManche);
-			
-			surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir); 
+
+			surfaceTexteManche = TTF_RenderText_Blended(police25, strTexteManche, maCouleurNoir);
 			textureTexteManche = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteManche);
 			SDL_FreeSurface(surfaceTexteManche);
 		}
@@ -485,11 +485,11 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		{
 			verifScore = score;
 			strTexteScore[8] = '\0' ;			//Supprime la fin de la chaine pour le remplacer
-			sprintf(strNbScore, "%d", score); 		//convertit (int) en char[] 
-			strcat(strTexteScore,strNbScore); 		//concaténe les 2 chaines de caractères 
+			sprintf(strNbScore, "%d", score); 		//convertit (int) en char[]
+			strcat(strTexteScore,strNbScore); 		//concaténe les 2 chaines de caractères
 			SDL_DestroyTexture(textureTexteScore);
-			
-			surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir); 
+
+			surfaceTexteScore = TTF_RenderText_Blended(police25, strTexteScore, maCouleurNoir);
 			textureTexteScore = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteScore);
 			SDL_FreeSurface(surfaceTexteScore);
 		}
@@ -497,11 +497,11 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		{
 			verifKillTotal = killTotal;
 			strTexteKillTotal[12] = '\0' ;			//Supprime la fin de la chaine pour le remplacer
-			sprintf(strNbKillTotal, "%d", killTotal); 		//convertit (int) en char[] 
-			strcat(strTexteKillTotal,strNbKillTotal); 		//concaténe les 2 chaines de caractères 
+			sprintf(strNbKillTotal, "%d", killTotal); 		//convertit (int) en char[]
+			strcat(strTexteKillTotal,strNbKillTotal); 		//concaténe les 2 chaines de caractères
 			SDL_DestroyTexture(textureTexteKillTotal);
-			
-			surfaceTexteKillTotal = TTF_RenderText_Blended(police25, strTexteKillTotal, maCouleurNoir); 
+
+			surfaceTexteKillTotal = TTF_RenderText_Blended(police25, strTexteKillTotal, maCouleurNoir);
 			textureTexteKillTotal = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteKillTotal);
 			SDL_FreeSurface(surfaceTexteKillTotal);
 		}
@@ -509,17 +509,17 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		{
 			verifArgent = argent;
 			strTexteArgent[9] = '\0' ;			//Supprime la fin de la chaine pour le remplacer
-			sprintf(strNbArgent, "%d", argent); 		//convertit (int) en char[] 
-			strcat(strTexteArgent,strNbArgent); 		//concaténe les 2 chaines de caractères 
+			sprintf(strNbArgent, "%d", argent); 		//convertit (int) en char[]
+			strcat(strTexteArgent,strNbArgent); 		//concaténe les 2 chaines de caractères
 			SDL_DestroyTexture(textureTexteArgent);
-			
-			surfaceTexteArgent = TTF_RenderText_Blended(police25, strTexteArgent, maCouleurNoir); 
+
+			surfaceTexteArgent = TTF_RenderText_Blended(police25, strTexteArgent, maCouleurNoir);
 			textureTexteArgent = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteArgent);
 			SDL_FreeSurface(surfaceTexteArgent);
 		}
-		
+
 		/**
-		 * Afficher le texte 
+		 * Afficher le texte
 		 */
         SDL_RenderCopy(pRenderer, textureTexteVie, NULL, &positionTexteVie);
 		SDL_RenderCopy(pRenderer, textureTexteManche, NULL, &positionTexteManche);
@@ -571,7 +571,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 		}
 
 		SDL_RenderPresent (pRenderer);
-		
+
 	}
 														  //////////////////////////////////////////////
 /*--------------------------------------------------------// Fin de la boucle principale d'une partie //------------------------------------------------------*/
@@ -677,9 +677,9 @@ Uint32 bougerEnnemisDebut2(Uint32 intervalle, void *parametre) {
 void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
 
 	for (int i = 0; i < listeTailleEn(li); i++) {
-				boxRGBA(pRenderer, getEnnemi(li, i)->forme.x + TAILLE_ENNEMI, 
-				getEnnemi(li, i)->forme.y, 
-				getEnnemi(li, i)->forme.x, 
+				boxRGBA(pRenderer, getEnnemi(li, i)->forme.x + TAILLE_ENNEMI,
+				getEnnemi(li, i)->forme.y,
+				getEnnemi(li, i)->forme.x,
 				getEnnemi(li, i)->forme.y + TAILLE_ENNEMI,
 				 0, 0, 0, 255 );
 	}
@@ -687,7 +687,7 @@ void colorationEnnemi(SDL_Renderer *pRenderer, ListeEnnemi *li) {
 
 /**
  * Fonction de callback pour le timer qui permet de créer les ennemis
- * qui arrivent par la gauche les uns après les autres et de définir 
+ * qui arrivent par la gauche les uns après les autres et de définir
  * leur position de départ
  */
 Uint32 creationEnnemiDebut1(Uint32 intervalle, void *parametre) {
@@ -701,7 +701,7 @@ Uint32 creationEnnemiDebut1(Uint32 intervalle, void *parametre) {
 
 /**
  * Fonction de callback pour le timer qui permet de créer les ennemis
- * qui arrivent par le haut les uns après les autres et de définir 
+ * qui arrivent par le haut les uns après les autres et de définir
  * leur position de départ
  */
 Uint32 creationEnnemiDebut2(Uint32 intervalle, void *parametre) {
@@ -739,10 +739,10 @@ Cases **allouerTab2D (int n, int m) {
     }
 
 	tabCase[4][0].emplacementInterdi = true; tabCase[4][1].emplacementInterdi = true; tabCase[4][2].emplacementInterdi = true;
-	tabCase[4][3].emplacementInterdi = true; tabCase[4][4].emplacementInterdi = true; tabCase[4][5].emplacementInterdi = true; 
+	tabCase[4][3].emplacementInterdi = true; tabCase[4][4].emplacementInterdi = true; tabCase[4][5].emplacementInterdi = true;
 	tabCase[4][6].emplacementInterdi = true; tabCase[5][6].emplacementInterdi = true; tabCase[6][6].emplacementInterdi = true;
 	tabCase[7][6].emplacementInterdi = true; tabCase[8][6].emplacementInterdi = true; tabCase[9][6].emplacementInterdi = true;
-	tabCase[9][7].emplacementInterdi = true; tabCase[9][8].emplacementInterdi = true; tabCase[9][9].emplacementInterdi = true; 
+	tabCase[9][7].emplacementInterdi = true; tabCase[9][8].emplacementInterdi = true; tabCase[9][9].emplacementInterdi = true;
 	tabCase[8][9].emplacementInterdi = true; tabCase[7][9].emplacementInterdi = true; tabCase[7][10].emplacementInterdi = true;
 	tabCase[7][11].emplacementInterdi = true; tabCase[7][12].emplacementInterdi = true; tabCase[8][12].emplacementInterdi = true;
 	tabCase[9][12].emplacementInterdi = true; tabCase[10][12].emplacementInterdi = true; tabCase[11][12].emplacementInterdi = true;
@@ -750,7 +750,7 @@ Cases **allouerTab2D (int n, int m) {
 	tabCase[12][15].emplacementInterdi = true; tabCase[11][15].emplacementInterdi = true; tabCase[10][15].emplacementInterdi = true;
 	tabCase[9][15].emplacementInterdi = true; tabCase[8][15].emplacementInterdi = true; tabCase[7][15].emplacementInterdi = true;
 	tabCase[6][15].emplacementInterdi = true; tabCase[5][15].emplacementInterdi = true; tabCase[4][15].emplacementInterdi = true;
-	tabCase[4][14].emplacementInterdi = true; tabCase[4][13].emplacementInterdi = true; tabCase[4][12].emplacementInterdi = true; 
+	tabCase[4][14].emplacementInterdi = true; tabCase[4][13].emplacementInterdi = true; tabCase[4][12].emplacementInterdi = true;
 	tabCase[4][11].emplacementInterdi = true; tabCase[4][10].emplacementInterdi = true; tabCase[3][10].emplacementInterdi = true;
 	tabCase[2][10].emplacementInterdi = true; tabCase[1][10].emplacementInterdi = true; tabCase[0][10].emplacementInterdi = true;
 	tabCase[10][8].emplacementInterdi = true; tabCase[11][8].emplacementInterdi = true; tabCase[12][8].emplacementInterdi = true;
@@ -773,7 +773,7 @@ void desallouerTab2D(Cases **tab, int n) {
     free(tab);
 }
 
-/** 
+/**
  * Permet de savoir si il y a la possibilité de placer une tourelle;
  * impossible de placer une tourelle sur un chemin, sur la bases ou si il y'a déjà une tourelle
  * @param point pointeur sur le clic la position du clic de la souris
@@ -833,7 +833,7 @@ void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, in
 	(*li)->tourelle.vitesseAttaque = VITESSE_D_ATTAQUE_TOURELLE_DEPART;
 	(*li)->tourelle.tpsEntre2Tire = SDL_GetTicks();
 	(*li)->tourelle.cout = 200;
-	
+
 	tab[n][m].occupationEmplacement = true;
 
 }
@@ -844,11 +844,11 @@ void ajouterTourelleEtPositionnement (ListeTourelle **li, Cases **tab, int n, in
  * @param li la liste des tourelles
  */
 void colorationTourelle(SDL_Renderer *pRenderer, ListeTourelle *li) {
-	
+
 	for (int i = 0; i < listeTailleTour(li); i++) {
-		boxRGBA(pRenderer, getTourelle(li, i)->forme.x + TAILLE_TOURELLE, 
-				getTourelle(li, i)->forme.y, 
-				getTourelle(li, i)->forme.x, 
+		boxRGBA(pRenderer, getTourelle(li, i)->forme.x + TAILLE_TOURELLE,
+				getTourelle(li, i)->forme.y,
+				getTourelle(li, i)->forme.x,
 				getTourelle(li, i)->forme.y + TAILLE_TOURELLE,
 				 0, 255, 0, 255 );
 	}
@@ -873,7 +873,7 @@ Bool souriSurTourelle(SDL_Point *p, ListeTourelle *li, int *tourelle) {
 			}
 		}
 	}
-	
+
 	*tourelle = i;
 
 	return souriToucheTourelle;
@@ -903,13 +903,13 @@ Bool collisionPointCercle(int x, int y, Cercle C) {
  */
 int projectionSurSegment(int Cx,int Cy,int Ax,int Ay,int Bx,int By) {
    int ACx = Cx-Ax;
-   int ACy = Cy-Ay; 
+   int ACy = Cy-Ay;
    int ABx = Bx-Ax;
-   int ABy = By-Ay; 
+   int ABy = By-Ay;
    int BCx = Cx-Bx;
-   int BCy = Cy-By; 
+   int BCy = Cy-By;
    int s1 = (ACx*ABx) + (ACy*ABy);
-   int s2 = (BCx*ABx) + (BCy*ABy); 
+   int s2 = (BCx*ABx) + (BCy*ABy);
 
    if (s1*s2>0) {
 
@@ -953,14 +953,14 @@ Bool collisionCercleRectangle(Cercle C1, SDL_Rect box1) {
    }
 
    int projvertical = projectionSurSegment(C1.x,C1.y,box1.x,box1.y,box1.x,box1.y+box1.h);
-   int projhorizontal = projectionSurSegment(C1.x,C1.y,box1.x,box1.y,box1.x+box1.w,box1.y); 
+   int projhorizontal = projectionSurSegment(C1.x,C1.y,box1.x,box1.y,box1.x+box1.w,box1.y);
 
    if (projvertical==1 || projhorizontal==1) {
 
-    	return true; 
+    	return true;
    }
 
-   return false; 
+   return false;
 }
 
 /*-----------------------------------------------------------------Fin collision cercle - Rectangle ------------------------------------------------------*/
@@ -990,7 +990,7 @@ void attaqueEnnemi (ListeEnnemi *le, ListeTourelle *lt) {
 			} else {
 				j--;
 			}
-		}	
+		}
 	}
 }
 
@@ -1051,6 +1051,6 @@ void afficherLaser(SDL_Renderer *pRenderer, ListeTourelle *lt, ListeEnnemi *le) 
 			} else {
 				j--;
 			}
-		}	
+		}
 	}
 }
