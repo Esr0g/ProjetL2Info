@@ -57,6 +57,7 @@ void jouer(SDL_Renderer* pRenderer, SDL_bool *programLaunched) {
 
 	/**
 	 * Permet de faire un timer pour le spawn des énnemis
+	 * Je rajoute des comm pour tester un branche
 	 */
 	SDL_TimerID initialisationListeEnnemiDebut1;
 	Bool initialisationListeEnnemiDebut1Bool = false;
