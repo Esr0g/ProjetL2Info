@@ -62,7 +62,7 @@ int main(void)
                         /////////////////////////////////
 
 
-    /** 
+    /**
      * Menu
      */
     TTF_Font *policeMenuPrcipale150 = TTF_OpenFont("textures/design.collection2.toontiei.ttf", 150);
@@ -109,7 +109,7 @@ int main(void)
 
         programLaunched = SDL_FALSE;
     }
-    
+
     SDL_Rect positionTexteJouerPrincipale;
 
     SDL_Surface *surfaceTexteJouerPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Jouer", couleurBlancheTexteMenu);
@@ -125,14 +125,14 @@ int main(void)
 
         programLaunched = SDL_FALSE;
     }
-    
+
     SDL_FreeSurface(surfaceTexteJouerPrincipale);
 
     SDL_QueryTexture(textureTexteJouerPrincipale, NULL, NULL, &positionTexteJouerPrincipale.w, &positionTexteJouerPrincipale.h);
 
     positionTexteJouerPrincipale.x = (FENETRE_LARGEUR / 2) - (positionTexteJouerPrincipale.w / 2);
     positionTexteJouerPrincipale.y = 350;
-    
+
 
     /**
      * Quitter
@@ -145,14 +145,14 @@ int main(void)
 
         programLaunched = SDL_FALSE;
     }
-    
+
     SDL_Texture *textureTexteQuitterPrincipale = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteQuitterPrincipale);
     if (textureTexteQuitterPrincipale == NULL) {
         SDL_Log("ERREUR: Creation du rendu à partir d'un texte > %s\n", SDL_GetError());
 
         programLaunched = SDL_FALSE;
     }
-    
+
     SDL_FreeSurface(surfaceTexteQuitterPrincipale);
 
     SDL_QueryTexture(textureTexteQuitterPrincipale, NULL, NULL, &positionTexteQuitterPricipale.w, &positionTexteQuitterPricipale.h);
@@ -189,16 +189,16 @@ int main(void)
 			colorationTexteJouerMP = true;
 			SDL_DestroyTexture(textureTexteJouerPrincipale);
 
-			surfaceTexteJouerPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Jouer", couleurRougeTexteMenu); 
+			surfaceTexteJouerPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Jouer", couleurRougeTexteMenu);
 			textureTexteJouerPrincipale = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteJouerPrincipale);
 
 			SDL_FreeSurface(surfaceTexteJouerPrincipale);
-			
+
 		} else if (colorationTexteJouerMP && !SDL_PointInRect(&positionSouriMenuP, &positionTexteJouerPrincipale)) {
 			colorationTexteJouerMP = false;
 			SDL_DestroyTexture(textureTexteJouerPrincipale);
 
-			surfaceTexteJouerPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Jouer", couleurBlancheTexteMenu); 
+			surfaceTexteJouerPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Jouer", couleurBlancheTexteMenu);
 			textureTexteJouerPrincipale = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteJouerPrincipale);
 
 			SDL_FreeSurface(surfaceTexteJouerPrincipale);
@@ -227,16 +227,16 @@ int main(void)
 			colorationTexteQuitterMP = true;
 			SDL_DestroyTexture(textureTexteQuitterPrincipale);
 
-			surfaceTexteQuitterPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Quitter", couleurRougeTexteMenu); 
+			surfaceTexteQuitterPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Quitter", couleurRougeTexteMenu);
 			textureTexteQuitterPrincipale = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteQuitterPrincipale);
 
 			SDL_FreeSurface(surfaceTexteQuitterPrincipale);
-			
+
 		} else if (colorationTexteQuitterMP && !SDL_PointInRect(&positionSouriMenuP, &positionTexteQuitterPricipale)) {
 			colorationTexteQuitterMP = false;
 			SDL_DestroyTexture(textureTexteQuitterPrincipale);
 
-			surfaceTexteQuitterPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Quitter", couleurBlancheTexteMenu); 
+			surfaceTexteQuitterPrincipale = TTF_RenderText_Blended(policeMenuPrcipale70, "Quitter", couleurBlancheTexteMenu);
 			textureTexteQuitterPrincipale = SDL_CreateTextureFromSurface(pRenderer, surfaceTexteQuitterPrincipale);
 
 			SDL_FreeSurface(surfaceTexteQuitterPrincipale);
